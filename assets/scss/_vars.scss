@@ -1,0 +1,77 @@
+
+$urbane: 'Urabne Rounded Medium';
+$vendetta: 'Vendetta';
+
+$font-sans-serif: $urbane, sans-serif;
+$font-serif: $vendetta, serif;
+
+/*
+@font-face {
+  font-family: $urbane;
+  src        : url('~assets/fonts/Device - Urbane Rounded Medium.eot');
+  src        : url('~assets/fonts/Device - Urbane Rounded Medium.eot?#iefix') format('embedded-opentype'), url('~assets/fonts/Device - Urbane Rounded Medium.otf') format("opentype");
+}
+*/
+
+// custom vars (non-bootstrap)
+// =============================================================================
+$header-bar-height: 4rem; // 120px
+
+$scrollbar-width: 8px;
+
+// bootstrap vars
+// =============================================================================
+$enable-rounded: false;
+$component-active-bg: transparent;
+
+$white: #fff;
+$black: #303030;
+$gray: #E6E6E6;
+$dark-gray: #ababab;
+
+$primary: #002FFF;
+$primary-focus: darken($primary, 80%);
+
+$secondary: #FA4F4F;
+
+$body-bg: $white;
+$body-color: $black;
+
+$table-border-color: $primary;
+$table-cell-padding: 30px;
+
+$font-family-sans-serif: $font-serif;
+$font-size-base: 1.125rem; // 18px
+$font-size-lg: 1.5rem;
+$font-size-sm: 1.125rem;
+
+//$paragraph-margin-bottom:   1rem !default;
+$h1-font-size: 2.375rem;
+$h2-font-size: 2.375rem;
+
+$nav-link-header-size: .8rem;
+//$h2-font-size:                $font-size-base * 2 !default;
+//$headings-margin-bottom:      ($spacer / 2) !default;
+
+$grid-columns: 12;
+$grid-gutter-width: 40px;
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  //  xl: 1400px,
+  xl: 2000px,
+);
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  //  xl: 1080px,
+  //xl: 1140px,
+  xl: 2000px,
+);
+
+$grid-expand: 1300px;
+
+$images-opacity: .8;

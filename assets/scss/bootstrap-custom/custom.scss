@@ -1,0 +1,107 @@
+.main-container {
+  width     : auto;
+  max-width : initial;
+  padding   : 0 6%;
+  margin-top: 8rem;
+
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    padding: 0 40px;
+  }
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    padding: 0 20px;
+  }
+}
+
+// Navbar
+//
+.navbar {
+  position   : relative;
+  padding    : 15px 40px;
+  font-family: $font-serif;
+}
+
+@media (max-width: map-get($grid-breakpoints, md)) {
+  .navbar {
+    padding: 15px;
+  }
+}
+
+// Navbar brand
+//
+.navbar-brand {
+  height        : $header-bar-height;
+  display       : inline-block;
+  padding-top   : $navbar-brand-padding-y;
+  padding-bottom: $navbar-brand-padding-y;
+  margin-right  : $navbar-padding-x;
+  font-size     : $navbar-brand-font-size;
+  line-height   : inherit;
+  white-space   : nowrap;
+
+  @include hover-focus {
+    text-decoration: none;
+  }
+}
+
+// Navbar nav
+.navbar-nav {
+  height        : 100vh;
+  box-sizing    : content-box;
+  display       : flex;
+  flex-direction: column; // cannot use `inherit` to get the `.navbar`s value
+  padding-left  : 0;
+  margin-bottom : 0;
+
+  width         : 480px;
+  max-width     : 90%;
+  padding       : 180px 0 0 90px;
+  position      : fixed;
+  top           : 0;
+  /* width + 90px for padding */
+  right         : -585px;
+
+  background    : $black;
+
+  transition    : right .4s ease-out;
+
+  .nav-link {
+    color          : $white!important;
+    text-decoration: none;
+    margin-bottom  : 0;
+    padding-left   : 0;
+    white-space    : nowrap;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+
+  &.active {
+    right: -$scrollbar-width;
+  }
+
+}
+
+@media (max-width: map-get($grid-breakpoints, md)) {
+  .navbar-nav {
+    padding: 100px 0 0 100px;
+  }
+}
+
+.nav-trigger {
+  position   : relative;
+  z-index    : 1000;
+  cursor     : pointer;
+  user-select: none;
+  color      : $black;
+
+  font-size  : 13px;
+  font-family: $font-sans-serif;
+
+  float      : right;
+
+  &.active {
+    color: $white;
+  }
+}

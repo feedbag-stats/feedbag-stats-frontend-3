@@ -1,0 +1,49 @@
+{
+	"name": "haus-eins-frontend",
+	"version": "1.0.0",
+	"description": "Haus Eins Frontend",
+	"author": "patrick.stillhart@jkweb.ch",
+	"private": true,
+	"scripts": {
+		"dev": "cross-env NODE_ENV=development HOST=0.0.0.0 PORT=3000 nuxt",
+		"build": "nuxt build",
+		"start": "nuxt start",
+		"generate": "nuxt generate",
+		"lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+		"precommit": "npm run lint"
+	},
+	"dependencies": {
+		"@fortawesome/fontawesome": "^1.1.8",
+		"@fortawesome/fontawesome-free-brands": "^5.0.13",
+		"@fortawesome/fontawesome-svg-core": "^1.2.6",
+		"@fortawesome/free-regular-svg-icons": "^5.4.1",
+		"@fortawesome/free-solid-svg-icons": "^5.4.2",
+		"@fortawesome/vue-fontawesome": "^0.0.22",
+		"@nuxtjs/google-analytics": "^2.0.2",
+		"@nuxtjs/sitemap": "^0.1.1",
+		"axios": "^0.18.0",
+		"babel-polyfill": "^6.26.0",
+		"bootstrap-vue": "^2.0.0-rc.11",
+		"cross-env": "^5.2.0",
+		"node-sass": "^4.9.4",
+		"nodemon": "^1.11.0",
+		"nuxt": "^2.4.2",
+		"nuxt-i18n": ">2.9",
+		"sass-loader": "^7.1.0",
+		"vue-headroom": "^0.9.0",
+		"vue-no-ssr": "^1.1.1",
+		"vue-scrollto": "^2.11.0",
+		"vue-slick": "^1.1.12",
+		"vuex-persistedstate": "^2.5.4"
+	},
+	"devDependencies": {
+		"babel-eslint": "^10.0.1",
+		"eslint": "^5.9.0",
+		"eslint-config-prettier": "^3.3.0",
+		"eslint-friendly-formatter": "^3.0.0",
+		"eslint-loader": "^2.1.1",
+		"eslint-plugin-prettier": "^3.0.0",
+		"eslint-plugin-vue": "^4.7.1",
+		"prettier": "^1.15.2"
+	}
+}

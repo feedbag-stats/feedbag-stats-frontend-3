@@ -1,0 +1,47 @@
+//default
+.page-leave-active {
+  // delay to wait for nav to collapse, then fade out
+  transition: all 300ms;
+}
+.page-enter-active {
+  // no delay, fade in
+  transition: all 300ms;
+}
+.page-enter,
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+
+/*transition slide-left*/
+.slide-left-leave-active,
+.slide-left-enter-active {
+  transition: all 600ms ease;
+}
+
+.slide-left-enter {
+  transform: translateX(2rem);
+}
+.slide-left-enter-to {
+  transform: translateX(-100%);
+}
+.slide-left-leave-to {
+  transform: translateX(calc(-100% - 2rem));
+}
+
+/*transition slide-right*/
+.slide-right-leave-active,
+.slide-right-enter-active {
+  transition: all 600ms ease;
+}
+
+.slide-right-enter {
+  transform: translateX(calc(-200% - 2rem));
+}
+.slide-right-enter-to {
+  transform: translateX(-100%);
+}
+.slide-right-leave-to {
+  transform: translateX(calc(100% + 2rem));
+}
