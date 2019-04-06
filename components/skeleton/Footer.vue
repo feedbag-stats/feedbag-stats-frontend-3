@@ -2,7 +2,7 @@
 <footer>
   <div class="bigger bg-light">
 
-    <b-container class="main-container">
+    <b-container >
       <b-row>
         <b-col md="4" lg="3">
           <h4>Kontakt</h4>
@@ -82,7 +82,6 @@
 
 footer {
     color: $black;
-    font-size: $font-size-sm;
     margin-top: 100px;
 
     .row > * {
@@ -114,7 +113,6 @@ footer {
     }
 
     #email {
-        letter-spacing: 0.1em; // letter-spacing: 100 (adobe xd)
         margin-bottom: 5px;
     }
 
@@ -151,7 +149,7 @@ form {
 }
 
 .response {
-    font-family: $font-sans-serif;
+    font-family: $font;
     font-size: 15px;
     line-height: 32px;
     letter-spacing: 0.1em;
@@ -163,7 +161,7 @@ form {
 
     &#mce-success-response {
         position: absolute;
-        background: $gray;
+        background: grey;
         color: $black;
         height: 100%;
         top: 0;

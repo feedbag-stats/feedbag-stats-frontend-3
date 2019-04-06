@@ -6,10 +6,6 @@ export default async function({ store, route, app, error }) {
 
   store.commit("SET_NAVIGATION_OPEN", false);
 
-  if (process.browser) {
-    document.querySelector("is-nav");
-  }
-
   if (cachingEnabled && store.state.loadedPages[route.fullPath]) {
     store.commit("SET_CURRENT_PAGE", store.state.loadedPages[route.fullPath]);
   } else {
@@ -25,20 +21,18 @@ export default async function({ store, route, app, error }) {
 
       if (!store.state.navigation.length) {
         let { data } = await axios.get(
-          store.state.backendURL + "/" + app.i18n.locale + "/ajax/navigation",
+          store.state.backendURL + "/" + app.i18n.locale + "/ajax/layout",
         );
         store.commit("SET_NAVIGATION", data);
       }
 
     } catch (err) {
 
-      if(err.request) {
-        return error({ statusCode: 0,
-                       message: "No connection to server" })
-      }
+      console.log(err)
 
-      return error({ statusCode: err.response.status,
-                     message: err.response.data })
+      if(!err.response) return error({ statusCode: 598, message: 'Couldn\'t connect to the backend' })
+
+      error({ statusCode: err.response.status, message: err.response.data })
 
     }
   }

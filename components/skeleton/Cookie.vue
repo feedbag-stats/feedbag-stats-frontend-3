@@ -4,7 +4,7 @@
     Wir verwenden Cookies, um die Seitennutzung zu verbessern. Mehr Infos unter
     <nuxt-link to="/de/info/datenschutzerklaerung" class="legal">Datenschutzerklärung</nuxt-link>.
   </p>
-  <button class="btn dark" v-on:click="accept()">OK</button>
+  <button class="btn btn-primary" v-on:click="accept()">OK</button>
 </div>
 </template>
 
@@ -22,6 +22,7 @@
     border-radius: 5px;
     padding: 25px 40px;
 
+    color: #eee;
     background: #000;
     box-shadow: 0 0 20px 0 rgba(0,0,0,.3);
 

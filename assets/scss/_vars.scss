@@ -1,57 +1,57 @@
+// => https://github.com/twbs/bootstrap-sass/blob/master/assets/stylesheets/bootstrap/_variables.scss
 
-$urbane: 'Urabne Rounded Medium';
-$vendetta: 'Vendetta';
-
-$font-sans-serif: $urbane, sans-serif;
-$font-serif: $vendetta, serif;
-
-/*
-@font-face {
-  font-family: $urbane;
-  src        : url('~assets/fonts/Device - Urbane Rounded Medium.eot');
-  src        : url('~assets/fonts/Device - Urbane Rounded Medium.eot?#iefix') format('embedded-opentype'), url('~assets/fonts/Device - Urbane Rounded Medium.otf') format("opentype");
-}
-*/
-
-// custom vars (non-bootstrap)
+// Colors
 // =============================================================================
-$header-bar-height: 4rem; // 120px
 
-$scrollbar-width: 8px;
+$brand-primary: rgb(36, 31, 129) !default;
+$primary: $brand-primary;
+$brand-primary-light: #0048EA !default;
+$brand-success: #5cb85c !default;
+$brand-info: rgb(0, 143, 186) !default;
+$brand-warning: rgb(255, 196, 0) !default;
+$brand-danger: rgb(255, 18, 18) !default;
+
+$white: #fff;
+$black: #000;
+
+$accent-bg: rgba($brand-primary, 0.03);
+
+// Fonts
+// =============================================================================
+
+$font: Arial, sans-serif;
+$font-family-base: $font !default;
+
+// fonts
+$font-root: 16px !default;
+$font-size-base: 1.25rem !default;
+$font-size-smaller: 1.25rem !default;
+
+$h1-font-size: 4rem;
+$h2-font-size: 3.75rem;
+$h3-font-size: 3.125rem;
+
+// Form
+// =============================================================================
+$border-radius-base: 100px;
 
 // bootstrap vars
 // =============================================================================
-$enable-rounded: false;
+$enable-rounded: true;
 $component-active-bg: transparent;
 
-$white: #fff;
-$black: #303030;
-$gray: #E6E6E6;
-$dark-gray: #ababab;
+// Buttons
+$btn-border-radius-base: 1000px;
 
-$primary: #002FFF;
-$primary-focus: darken($primary, 80%);
-
-$secondary: #FA4F4F;
-
-$body-bg: $white;
-$body-color: $black;
-
-$table-border-color: $primary;
+$table-border-color: $brand-primary;
 $table-cell-padding: 30px;
 
-$font-family-sans-serif: $font-serif;
-$font-size-base: 1.125rem; // 18px
-$font-size-lg: 1.5rem;
-$font-size-sm: 1.125rem;
-
-//$paragraph-margin-bottom:   1rem !default;
-$h1-font-size: 2.375rem;
-$h2-font-size: 2.375rem;
-
 $nav-link-header-size: .8rem;
-//$h2-font-size:                $font-size-base * 2 !default;
-//$headings-margin-bottom:      ($spacer / 2) !default;
+
+$header-bar-height: 60px;
+
+// grid
+// =============================================================================
 
 $grid-columns: 12;
 $grid-gutter-width: 40px;
@@ -60,18 +60,11 @@ $grid-breakpoints: (
   sm: 576px,
   md: 768px,
   lg: 992px,
-  //  xl: 1400px,
-  xl: 2000px,
+  xl: 1400px
 );
 $container-max-widths: (
   sm: 540px,
   md: 720px,
   lg: 960px,
-  //  xl: 1080px,
-  //xl: 1140px,
-  xl: 2000px,
+  xl: 1300px,
 );
-
-$grid-expand: 1300px;
-
-$images-opacity: .8;

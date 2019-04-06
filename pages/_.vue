@@ -1,15 +1,14 @@
 <template>
-  <main>
 
-    <component :id="section.slug" v-for="(section,index) in content.sections" :key="index" :is="section.component" :data="section"></component>
+  <component :is="page.component" :data="page.content"></component>
 
-  </main>
 </template>
 
 <script>
 import Vue from 'vue'
 
-const requireComponent = require.context('@/components/template', true, /.*$/)
+// auto register components
+const requireComponent = require.context('@/components/page', true, /.*$/)
 requireComponent.keys().forEach(fileName => {
 
   const componentConfig = requireComponent(fileName)
@@ -19,47 +18,40 @@ requireComponent.keys().forEach(fileName => {
 
 })
 
-  export default {
-    name: "Home",
+export default {
 
-    data() {
-      return {
-        content: this.$store.state.currentPage.content,
-      }
-    },
-
-    head() {
-      return {
-        title: this.$store.state.currentPage.title,
-        meta: [
-          {
-            hid: "description",
-            name: "description",
-            content: this.$store.state.currentPage.description,
-          },
-          {
-            hid: "keywords",
-            name: "keywords",
-            content: this.$store.state.currentPage.keywords,
-          },
-        ],
-      }
-    },
-
-    beforeRouteUpdate(to, from, next) {
-      to.params['0'] = to.params.pathMatch;
-      next();
-    },
-
-    beforeRouteEnter(to, from, next) {
-      to.params['0'] = to.params.pathMatch;
-      next();
+  data() {
+    return {
+      page: this.$store.state.currentPage,
     }
+  },
 
+  head() {
+    return {
+      title: this.$store.state.currentPage.title,
+      meta: [{
+          hid: "description",
+          name: "description",
+          content: this.$store.state.currentPage.description,
+        },
+        {
+          hid: "keywords",
+          name: "keywords",
+          content: this.$store.state.currentPage.keywords,
+        },
+      ],
+    }
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    to.params['0'] = to.params.pathMatch;
+    next();
+  },
+
+  beforeRouteEnter(to, from, next) {
+    to.params['0'] = to.params.pathMatch;
+    next();
   }
+
+}
 </script>
-
-<style lang="scss">
-  @import "~~/assets/scss/_vars.scss";
-
-</style>

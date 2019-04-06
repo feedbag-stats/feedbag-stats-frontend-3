@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <Header />
-    <div class="pages"><nuxt /></div>
+    <main><nuxt /></main>
     <Footer />
     <Cookie />
   </div>
@@ -11,6 +11,18 @@
 @import "~~/assets/scss/_vars.scss";
 @import "~bootstrap/scss/mixins";
 
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex-grow: 1;
+  margin-top : 115px; // navbar
+  padding-top: 40px;
+}
+
 </style>
 
 <script>
@@ -19,5 +31,5 @@ import Footer from "~/components/skeleton/Footer";
 import Cookie from "~/components/skeleton/Cookie";
 export default {
   components: { Footer, Header, Cookie },
-};
+}
 </script>

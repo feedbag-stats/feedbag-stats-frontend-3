@@ -16,8 +16,8 @@
 
       <nav id="nav_collapse" class="navbar-nav" v-bind:class="{ active: navActive }">
 
-        <nuxt-link to="#" class="h2 nav-link" @click.native="closeNav">
-          Nav Link #1
+        <nuxt-link to="/" class="h2 nav-link" @click.native="closeNav">
+          Home
         </nuxt-link>
 
       </nav>

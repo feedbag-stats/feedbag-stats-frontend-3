@@ -1,24 +1,13 @@
-.main-container {
-  width     : auto;
-  max-width : initial;
-  padding   : 0 6%;
-  margin-top: 8rem;
-
-  @media (max-width: map-get($grid-breakpoints, md)) {
-    padding: 0 40px;
-  }
-
-  @media (max-width: map-get($grid-breakpoints, sm)) {
-    padding: 0 20px;
-  }
+html {
+  font-size: $font-root;
 }
 
-// Navbar
-//
+// navbar
+// =============================================================================
 .navbar {
   position   : relative;
   padding    : 15px 40px;
-  font-family: $font-serif;
+  font-family: $font;
 }
 
 @media (max-width: map-get($grid-breakpoints, md)) {
@@ -27,8 +16,6 @@
   }
 }
 
-// Navbar brand
-//
 .navbar-brand {
   height        : $header-bar-height;
   display       : inline-block;
@@ -53,7 +40,7 @@
   padding-left  : 0;
   margin-bottom : 0;
 
-  width         : 480px;
+  width         : 350px;
   max-width     : 90%;
   padding       : 180px 0 0 90px;
   position      : fixed;
@@ -65,6 +52,10 @@
 
   transition    : right .4s ease-out;
 
+  &.active {
+    right: 0;
+  }
+
   .nav-link {
     color          : $white!important;
     text-decoration: none;
@@ -75,10 +66,6 @@
     &:hover {
       color: $primary;
     }
-  }
-
-  &.active {
-    right: -$scrollbar-width;
   }
 
 }
@@ -97,7 +84,7 @@
   color      : $black;
 
   font-size  : 13px;
-  font-family: $font-sans-serif;
+  font-family: $font;
 
   float      : right;
 
@@ -105,3 +92,6 @@
     color: $white;
   }
 }
+
+// stuff
+// =============================================================================

@@ -4,7 +4,7 @@ import Vue from 'vue';
 const createStore = () => {
   return new Vuex.Store({
     state: {
-      backendURL: "<REPLACE ME> ",
+      backendURL: "https://cms.jkweb.dev",
       currentPage: {},
       navigation: [],
       loadedPages: {},
