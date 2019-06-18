@@ -148,12 +148,18 @@
     },
     async created() {
       let aggregated = await axios.get('/activity/aggregated', {
-        baseURL: this.$store.state.backendURL
+        baseURL: this.$store.state.backendURL,
+        headers: {
+          Authorization: this.$store.state.user.token
+        }
       });
       this.aggregated = aggregated.data;
 
       let timeline = await axios.get('/activity/all', {
-        baseURL: this.$store.state.backendURL
+        baseURL: this.$store.state.backendURL,
+        headers: {
+          Authorization: this.$store.state.user.token
+        }
       });
       this.timeline = timeline.data;
       this.updateSeries();
