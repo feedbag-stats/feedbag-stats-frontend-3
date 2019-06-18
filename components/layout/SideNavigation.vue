@@ -43,6 +43,12 @@
               Settings
             </nuxt-link>
           </li>
+          <li>
+            <nuxt-link :to="localePath('users')">
+              <font-awesome-icon :icon="['fal', 'users']"/>
+              Users
+            </nuxt-link>
+          </li>
         </ul>
       </div>
     </div>

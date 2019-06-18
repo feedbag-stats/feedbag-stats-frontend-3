@@ -27,6 +27,7 @@ module.exports = {
     {src: "~/plugins/vue-bootstrap.js"},
     {src: "~/plugins/font-awesome.js"},
     {src: '~/plugins/highcharts.js', ssr: false},
+    {src: "~/plugins/local-storage.js", ssr: false},
     {src: "~/plugins/i18n.js"},
   ],
   /*

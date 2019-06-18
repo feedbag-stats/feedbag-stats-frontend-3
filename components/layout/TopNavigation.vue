@@ -1,9 +1,9 @@
 <template>
   <header>
     <div class="inner clearfix">
-      <div class="float-right">
+      <div v-if="user" class="float-right">
         <font-awesome-icon :icon="['fal', 'user']"/>&nbsp;&nbsp;
-        Max Mustermann
+        {{ user.name }}
       </div>
     </div>
   </header>
@@ -20,6 +20,11 @@
 
   export default {
     name: "Navigation",
-    components: {}
+    components: {},
+    computed: {
+      user() {
+        return this.$store.state.user;
+      },
+    },
   }
 </script>
