@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
     <br><br><br><br><br><br>
-    <h1>This is the front page :-)</h1>
+    <h1>Testing Page</h1>
   </div>
 </template>
 

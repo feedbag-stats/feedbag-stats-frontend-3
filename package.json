@@ -15,9 +15,11 @@
 	"dependencies": {
 		"@fortawesome/fontawesome": "^1.1.8",
 		"@fortawesome/fontawesome-free-brands": "^5.0.13",
+		"@fortawesome/fontawesome-pro": "^5.8.1",
 		"@fortawesome/fontawesome-svg-core": "^1.2.6",
 		"@fortawesome/free-regular-svg-icons": "^5.4.1",
 		"@fortawesome/free-solid-svg-icons": "^5.4.2",
+		"@fortawesome/pro-light-svg-icons": "^5.8.1",
 		"@fortawesome/vue-fontawesome": "^0.0.22",
 		"@nuxtjs/google-analytics": "^2.0.2",
 		"@nuxtjs/sitemap": "^0.1.1",
@@ -25,6 +27,8 @@
 		"babel-polyfill": "^6.26.0",
 		"bootstrap-vue": "^2.0.0-rc.11",
 		"cross-env": "^5.2.0",
+		"highcharts": "^7.1.1",
+		"highcharts-vue": "^1.2.0",
 		"node-sass": "^4.9.4",
 		"nodemon": "^1.11.0",
 		"nuxt": "^2.4.2",
@@ -34,6 +38,7 @@
 		"vue-no-ssr": "^1.1.1",
 		"vue-scrollto": "^2.11.0",
 		"vue-slick": "^1.1.12",
+		"vue2-highcharts": "^1.2.5",
 		"vuex-persistedstate": "^2.5.4"
 	},
 	"devDependencies": {

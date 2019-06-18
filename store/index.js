@@ -4,26 +4,8 @@ import Vue from 'vue';
 const createStore = () => {
   return new Vuex.Store({
     state: {
-      backendURL: "https://cms.jkweb.dev",
-      currentPage: {},
-      navigation: [],
-      loadedPages: {},
-      navigationOpen: false,
-    },
-    mutations: {
-      SET_CURRENT_PAGE(state, content) {
-        state.currentPage = content;
-      },
-      CACHE_PAGE(state, content) {
-        Vue.set(state.loadedPages, content.route, content);
-      },
-      SET_NAVIGATION(state, content) {
-        state.navigation = content;
-      },
-      SET_NAVIGATION_OPEN(state, value) {
-        state.navigationOpen = value;
-      },
-    },
+      backendURL: "http://localhost:8080",
+    }
   });
 };
 

@@ -3,9 +3,9 @@ module.exports = {
    ** Headers of the page
    */
   head: {
-    title: "Nuxt Skeleton",
+    title: "Feedbag Stats Frontend",
     meta: [
-      { charset: "utf-8" },
+      {charset: "utf-8"},
       {
         name: "viewport",
         content: "width=device-width, initial-scale=1.0, user-scalable=no",
@@ -20,21 +20,19 @@ module.exports = {
         content: "<REPLACE ME>"
       }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.png" }],
-    script: [{ src: "https://cdn.polyfill.io/v2/polyfill.js" }],
+    link: [{rel: "icon", type: "image/x-icon", href: "/favicon.png"}],
+    script: [{src: "https://cdn.polyfill.io/v2/polyfill.js"}],
   },
   plugins: [
-    "~/plugins/vue-bootstrap.js",
-    { src: "~/plugins/font-awesome.js", ssr: false },
-    { src: "~/plugins/scroll-to.js", ssr: true },
-    { src: "~/plugins/localStorage.js", ssr: false },
-    { src: "~/plugins/i18n.js" },
-    { src: "~/plugins/headroom.js", ssr: false},
+    {src: "~/plugins/vue-bootstrap.js"},
+    {src: "~/plugins/font-awesome.js"},
+    {src: '~/plugins/highcharts.js', ssr: false},
+    {src: "~/plugins/i18n.js"},
   ],
   /*
    ** Customize the progress bar color
    */
-  loading: { color: "#CCBB8B" },
+  loading: {color: "#CCBB8B"},
   css: ["~/assets/scss/app.scss"],
   /*
    ** Build configuration
@@ -44,7 +42,7 @@ module.exports = {
     /*
      ** Run ESLint on save
      */
-    extend(config, { isDev, isClient }) {
+    extend(config, {isDev, isClient}) {
       if (false && isDev && isClient) {
         config.module.rules.push({
           enforce: "pre",
@@ -58,38 +56,7 @@ module.exports = {
     },
     vendors: ["babel-polyfill"],
   },
-  router: {
-    scrollBehavior(to, from, savedPosition) {
-      let position = false;
-
-      if (savedPosition) {
-        position = savedPosition;
-      } else {
-        if (to.matched.length < 2) {
-          position = { x: 0, y: 0 };
-        } else if (
-          to.matched.some(r => r.components.default.options.scrollToTop)
-        ) {
-          position = { x: 0, y: 0 };
-        }
-        if (to.hash) {
-          position = { selector: to.hash };
-        }
-      }
-
-      if (position.selector && document.querySelector(position.selector))
-        return position;
-
-      return new Promise(resolve => {
-        // wait for the out transition to complete (if necessary)
-        // view https://github.com/nuxt/nuxt.js/issues/2738
-        window.$nuxt.$once("triggerScroll", () => {
-          resolve(position);
-        });
-      });
-    },
-    middleware: "content-fetch",
-  },
+  router: {},
   generate: {
     routes: [
       "/",
@@ -105,30 +72,20 @@ module.exports = {
     generate: false, // Enable me when using nuxt generate
   },
   modules: [
-    ["bootstrap-vue/nuxt", { css: false }],
+    ["bootstrap-vue/nuxt", {css: false}],
     [
       "nuxt-i18n",
       {
         locales: [
-          { code: "de", iso: "de-CH", file: "de.js", name: "D" },
-          { code: "fr", iso: "fr-CH", file: "fr.js", name: "F" },
-          { code: "it", iso: "it-CH", file: "it.js", name: "I" },
+          {code: "en", iso: "en-CH", file: "en.js", name: "E"},
         ],
-        defaultLocale: "de",
+        defaultLocale: "en",
         detectBrowserLanguage: true,
         lazy: true,
         langDir: "lang/",
-        rootRedirect: "de",
-        redirectRootToLocale: "de",
-        parsePages: false,
-        strategy: "prefix",
-        pages: {
-          index: {
-            de: "/",
-            fr: "/",
-            it: "/",
-          },
-        },
+        rootRedirect: "en",
+        redirectRootToLocale: "en",
+        strategy: "prefix_except_default",
       },
     ],
     [
