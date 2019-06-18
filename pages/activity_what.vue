@@ -23,7 +23,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
 
   export default {
     components: {},
@@ -147,21 +146,19 @@
       }
     },
     async created() {
-      let aggregated = await axios.get('/activity/aggregated', {
-        baseURL: this.$store.state.backendURL,
+      let aggregated = await this.$axios.$get('/activity/aggregated', {
         headers: {
           Authorization: this.$store.state.user.token
         }
       });
-      this.aggregated = aggregated.data;
+      this.aggregated = aggregated;
 
-      let timeline = await axios.get('/activity/all', {
-        baseURL: this.$store.state.backendURL,
+      let timeline = await this.$axios.$get('/activity/all', {
         headers: {
           Authorization: this.$store.state.user.token
         }
       });
-      this.timeline = timeline.data;
+      this.timeline = timeline;
       this.updateSeries();
     }
   }

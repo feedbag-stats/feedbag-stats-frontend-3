@@ -12,13 +12,12 @@
 </template>
 
 <script>
-  import axios from 'axios'
 
   export default {
     components: {},
-    asyncData({store}) {
-      return axios.get(store.state.backendURL + '/users').then((res) => {
-        return {users: res.data}
+    asyncData({$axios}) {
+      return $axios.$get('/users').then((res) => {
+        return {users: res}
       }).catch((err) => {
         console.log(err.message)
       })

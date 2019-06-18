@@ -1,3 +1,9 @@
+require('dotenv').config({
+  path: process.env.NODE_ENV === 'production' ? '.env.prod' : '.env'
+});
+
+console.log(process.env);
+
 module.exports = {
   /*
    ** Headers of the page
@@ -96,10 +102,16 @@ module.exports = {
       },
     ],
     "@nuxtjs/sitemap",
+    '@nuxtjs/axios',
   ],
   vue: {
     loaders: {
       scss: "style!css!sass",
     },
+  },
+  axios: {
+    baseURL: process.env.BASE_URL,
+    browserBaseURL: process.env.BASE_URL,
+    credentials: false
   },
 };

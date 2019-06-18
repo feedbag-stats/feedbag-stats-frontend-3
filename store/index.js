@@ -11,17 +11,18 @@ const createStore = () => {
     },
     mutations: {
       setUser(state, user) {
+        console.log(user);
         state.user = user;
       },
     },
     actions: {
-      login({ commit, state }, token) {
-        axios.get(state.backendURL + '/me', {
+      login({commit, state}, token) {
+        this.$axios.$get('/me', {
           headers: {
             Authorization: token,
           }
         }).then((res) => {
-          commit('setUser',res.data);
+          commit('setUser', res);
         }).catch((err) => {
           console.log(err.message)
         });
