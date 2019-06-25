@@ -1,57 +1,59 @@
 <template>
   <aside class="side-navigation">
-    <div class="inner">
-      <div class="brand">
-        <h1>Feedbag<br>
-          <font-awesome-icon :icon="['fal', 'chart-bar']"/>
-          Stats
-        </h1>
+    <no-ssr>
+      <div class="inner">
+        <div class="brand">
+          <h1>Feedbag<br>
+            <font-awesome-icon :icon="['fal', 'chart-bar']"/>
+            Stats
+          </h1>
+        </div>
+        <div class="menu">
+          <ul>
+            <li>
+              <nuxt-link :to="localePath('activity_what')">
+                <font-awesome-icon :icon="['fal', 'tasks']"/>
+                Activity What
+              </nuxt-link>
+            </li>
+            <li>
+              <nuxt-link :to="localePath('activity_where')">
+                <font-awesome-icon :icon="['fal', 'tasks']"/>
+                Activity Where
+              </nuxt-link>
+            </li>
+            <li>
+              <nuxt-link :to="localePath('testing')">
+                <font-awesome-icon :icon="['fal', 'tasks']"/>
+                Testing
+              </nuxt-link>
+            </li>
+            <li>
+              <nuxt-link :to="localePath('global_statistics')">
+                <font-awesome-icon :icon="['fal', 'tasks']"/>
+                Global Statistics
+              </nuxt-link>
+            </li>
+          </ul>
+        </div>
+        <div class="menu">
+          <ul>
+            <li>
+              <nuxt-link :to="localePath('settings')">
+                <font-awesome-icon :icon="['fal', 'cog']"/>
+                Settings
+              </nuxt-link>
+            </li>
+            <li>
+              <nuxt-link :to="localePath('users')">
+                <font-awesome-icon :icon="['fal', 'users']"/>
+                Users
+              </nuxt-link>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="menu">
-        <ul>
-          <li>
-            <nuxt-link :to="localePath('activity_what')">
-              <font-awesome-icon :icon="['fal', 'tasks']"/>
-              Activity What
-            </nuxt-link>
-          </li>
-          <li>
-            <nuxt-link :to="localePath('activity_where')">
-              <font-awesome-icon :icon="['fal', 'tasks']"/>
-              Activity Where
-            </nuxt-link>
-          </li>
-          <li>
-            <nuxt-link :to="localePath('testing')">
-              <font-awesome-icon :icon="['fal', 'tasks']"/>
-              Testing
-            </nuxt-link>
-          </li>
-          <li>
-            <nuxt-link :to="localePath('global_statistics')">
-              <font-awesome-icon :icon="['fal', 'tasks']"/>
-              Global Statistics
-            </nuxt-link>
-          </li>
-        </ul>
-      </div>
-      <div class="menu">
-        <ul>
-          <li>
-            <nuxt-link :to="localePath('settings')">
-              <font-awesome-icon :icon="['fal', 'cog']"/>
-              Settings
-            </nuxt-link>
-          </li>
-          <li>
-            <nuxt-link :to="localePath('users')">
-              <font-awesome-icon :icon="['fal', 'users']"/>
-              Users
-            </nuxt-link>
-          </li>
-        </ul>
-      </div>
-    </div>
+    </no-ssr>
   </aside>
 </template>
 
