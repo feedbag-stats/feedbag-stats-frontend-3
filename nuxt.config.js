@@ -24,7 +24,9 @@ module.exports = {
         content: "<REPLACE ME>"
       }
     ],
-    link: [{rel: "icon", type: "image/x-icon", href: "/favicon.png"}],
+    link: [
+      {rel: "icon", type: "image/x-icon", href: "/favicon.png"},
+      {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Source+Sans+Pro'}],
     script: [{src: "https://cdn.polyfill.io/v2/polyfill.js"}],
   },
   plugins: [
