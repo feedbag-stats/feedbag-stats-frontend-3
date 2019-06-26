@@ -1,14 +1,28 @@
 <template>
   <div>
     <h1>Activity What Page</h1>
+    <no-ssr>
+    </no-ssr>
+    <no-ssr>
+      <date-range-picker
+        v-model="dateRange"
+        @update="updateData"
+        :locale-data="locale"
+        :opens="opens"
+      >
+        <!--Optional scope for the input displaying the dates -->
+        <div slot="input" slot-scope="picker">
+          <font-awesome-icon :icon="['fal', 'calendar']"/>
+        </div>
+      </date-range-picker>
+    </no-ssr>
     <div class="row">
-      <div class="col-md-8">
-        <no-ssr>
+      <!--<no-ssr>
           <highcharts
             :updateArgs="updateArgs"
             :options="timelineOptions"
             ref="timelineChart"/>
-        </no-ssr>
+        </no-ssr>-->
       </div>
       <div class="col-md-4">
         <no-ssr>
@@ -24,10 +38,47 @@
 
 <script>
 
+  import moment from 'moment';
+
   export default {
     components: {},
     data() {
       return {
+        dateRange: { // used for v-model prop
+          startDate: moment().format(),
+          endDate: moment().format(),
+        },
+        opens: "right",//which way the picker opens, default "center", can be "left"/"right"
+        locale: {
+          direction: 'ltr', //direction of text
+          format: 'DD-MM-YYYY', //fomart of the dates displayed
+          separator: ' - ', //separator between the two ranges
+          applyLabel: 'Apply',
+          cancelLabel: 'Cancel',
+          weekLabel: 'W',
+          customRangeLabel: 'Custom Range',
+          daysOfWeek: moment.weekdaysMin(), //array of days - see moment documenations for details
+          monthNames: moment.monthsShort(), //array of month names - see moment documenations for details
+          firstDay: 1, //ISO first day of week - see moment documenations for details
+          showWeekNumbers: true //show week numbers on each row of the calendar
+        },
+        ranges: { //default value for ranges object (if you set this to false ranges will no be rendered)
+          'Today': [moment(), moment()],
+          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'This month': [moment().startOf('month'), moment().endOf('month')],
+          'This year': [moment().startOf('year'), moment().endOf('year')],
+          'Last week': [moment().subtract(1, 'week').startOf('week'), moment().subtract(1, 'week').endOf('week')],
+          'Last month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+        },
+        shortcuts: [
+          {
+            text: 'Today',
+            onClick: () => {
+              this.time1 = [new Date(), new Date()]
+            }
+          }
+        ],
+        time1: '',
         updateArgs: [true, true, true],
         aggregated: [],
         timeline: [],
@@ -72,13 +123,41 @@
               showInLegend: true
             }
           },
-          series: []
+          series: [{
+            name: 'Activities',
+            colorByPoint: true,
+            data: [],
+          }]
         }
       }
     },
-    async asyncData({store}) {
-    },
     methods: {
+      async updateData() {
+        console.log(this.dateRange);
+
+        let aggregated = await
+          this.$axios.$get('/activity/aggregated', {
+            params: {
+              start: moment(this.dateRange.startDate).format('YYYY-MM-DD'),
+              end: moment(this.dateRange.endDate).format('YYYY-MM-DD'),
+            },
+            headers: {
+              Authorization: this.$store.state.user.token
+            }
+          });
+        this.aggregated = aggregated;
+
+        /*
+        let timeline = await
+          this.$axios.$get('/activity/all', {
+            headers: {
+              Authorization: this.$store.state.user.token
+            }
+          });
+        this.timeline = timeline;
+        */
+        this.updateSeries();
+      },
       updateSeries() {
 
         // pie Chart
@@ -99,18 +178,16 @@
           colorByPoint: true,
           data: data,
         };*/
-        pieChart.chart.addSeries({
-          name: 'Activities',
-          colorByPoint: true,
+        pieChart.chart.series[0].update({
           data: data
         });
+        pieChart.chart.redraw();
 
+        /*
         // timeline Chart
 
         let timelineChart = this.$refs.timelineChart;
         let categories = ['ACTIVE', 'DEBUG', 'TESTINGSTATE', 'TESTRUN', 'WRITE'];
-
-        console.log(this.timeline);
 
         data = [];
         this.timeline.forEach(element => {
@@ -120,8 +197,6 @@
             y: categories.indexOf(element.type)
           });
         });
-
-        console.log(data);
 
         timelineChart.chart.addSeries({
           name: 'Activities',
@@ -134,28 +209,15 @@
           dataLabels: {
             enabled: false
           }
-        });
+        });*/
       }
-    },
+    }
+    ,
     async created() {
       // this is hacky, but we need to wait until local storage is loaded for the token
       window.onNuxtReady(async () => {
-          let aggregated = await this.$axios.$get('/activity/aggregated', {
-            headers: {
-              Authorization: this.$store.state.user.token
-            }
-          });
-          this.aggregated = aggregated;
-
-          let timeline = await this.$axios.$get('/activity/all', {
-            headers: {
-              Authorization: this.$store.state.user.token
-            }
-          });
-          this.timeline = timeline;
-          this.updateSeries();
-        }
-      );
+        this.updateData();
+      });
     }
   }
 </script>

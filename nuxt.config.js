@@ -2,8 +2,6 @@ require('dotenv').config({
   path: process.env.NODE_ENV === 'production' ? '.env.prod' : '.env'
 });
 
-console.log(process.env);
-
 module.exports = {
   /*
    ** Headers of the page
@@ -34,13 +32,14 @@ module.exports = {
     {src: "~/plugins/font-awesome.js"},
     {src: '~/plugins/highcharts.js', ssr: false},
     {src: "~/plugins/local-storage.js", ssr: false},
+    {src: "~/plugins/datepicker.js", ssr: false},
     {src: "~/plugins/i18n.js"},
   ],
   /*
    ** Customize the progress bar color
    */
   loading: {color: "#CCBB8B"},
-  css: ["~/assets/scss/app.scss"],
+  css: ["~/assets/scss/app.scss", "vue2-daterange-picker/dist/lib/vue-daterange-picker.min.css"],
   /*
    ** Build configuration
    */
