@@ -45,21 +45,9 @@
             title: {
               text: ''
             },
-            categories: ['Reading', 'Writing', 'Testing', 'Debugging'],
+            categories: ['ACTIVE', 'DEBUG', 'TESTINGSTATE', 'TESTRUN', 'WRITE'],
             reversed: true
-          },
-          series: [{
-            name: 'new series',
-            // pointPadding: 0,
-            // groupPadding: 0,
-            borderColor: 'gray',
-            pointWidth: 20,
-            turboThreshold: 10000,
-            data: [],
-            dataLabels: {
-              enabled: false
-            }
-          }]
+          }
         },
         optionsPieChart: {
           chart: {
@@ -120,19 +108,23 @@
         // timeline Chart
 
         let timelineChart = this.$refs.timelineChart;
-        let categories = ['Reading', 'Writing', 'Testing', 'Debugging'];
+        let categories = ['ACTIVE', 'DEBUG', 'TESTINGSTATE', 'TESTRUN', 'WRITE'];
+
+        console.log(this.timeline);
 
         data = [];
         this.timeline.forEach(element => {
           data.push({
-            x: element.begin * 1000,
-            x2: element.end * 1000,
+            x: Date.parse(element.begin),
+            x2: Date.parse(element.end),
             y: categories.indexOf(element.type)
           });
         });
 
+        console.log(data);
+
         timelineChart.chart.addSeries({
-          name: 'new series',
+          name: 'Activities',
           // pointPadding: 0,
           // groupPadding: 0,
           borderColor: 'gray',
@@ -146,20 +138,24 @@
       }
     },
     async created() {
-      let aggregated = await this.$axios.$get('/activity/aggregated', {
-        headers: {
-          Authorization: this.$store.state.user.token
-        }
-      });
-      this.aggregated = aggregated;
+      // this is hacky, but we need to wait until local storage is loaded for the token
+      window.onNuxtReady(async () => {
+          let aggregated = await this.$axios.$get('/activity/aggregated', {
+            headers: {
+              Authorization: this.$store.state.user.token
+            }
+          });
+          this.aggregated = aggregated;
 
-      let timeline = await this.$axios.$get('/activity/all', {
-        headers: {
-          Authorization: this.$store.state.user.token
+          let timeline = await this.$axios.$get('/activity/all', {
+            headers: {
+              Authorization: this.$store.state.user.token
+            }
+          });
+          this.timeline = timeline;
+          this.updateSeries();
         }
-      });
-      this.timeline = timeline;
-      this.updateSeries();
+      );
     }
   }
 </script>
