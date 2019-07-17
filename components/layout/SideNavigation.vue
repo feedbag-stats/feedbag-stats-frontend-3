@@ -34,6 +34,12 @@
                 Global Statistics
               </nuxt-link>
             </li>
+            <li>
+              <nuxt-link :to="localePath('data_exploration')">
+                <font-awesome-icon :icon="['fal', 'tasks']"/>
+                Data Exploration
+              </nuxt-link>
+            </li>
           </ul>
         </div>
         <div class="menu">

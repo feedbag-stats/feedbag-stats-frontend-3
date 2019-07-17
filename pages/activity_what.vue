@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Activity What Page</h1>
+    <h1 class="page-title">Activity What Page</h1>
     <no-ssr>
     </no-ssr>
     <no-ssr>
@@ -12,7 +12,7 @@
       >
         <!--Optional scope for the input displaying the dates -->
         <div slot="input" slot-scope="picker">
-          <font-awesome-icon :icon="['fal', 'calendar']"/>
+          <font-awesome-icon :icon="['fal', 'calendar']"/>&nbsp;{{ dateRange.startDate.toLocaleDateString() }} - {{ dateRange.endDate.toLocaleDateString() }}
         </div>
       </date-range-picker>
     </no-ssr>
@@ -23,15 +23,14 @@
             :options="timelineOptions"
             ref="timelineChart"/>
         </no-ssr>-->
-      </div>
-      <div class="col-md-4">
-        <no-ssr>
-          <highcharts
-            :updateArgs="updateArgs"
-            :options="optionsPieChart"
-            ref="pieChart"/>
-        </no-ssr>
-      </div>
+    </div>
+    <div class="col-md-4">
+      <no-ssr>
+        <highcharts
+          :updateArgs="updateArgs"
+          :options="optionsPieChart"
+          ref="pieChart"/>
+      </no-ssr>
     </div>
   </div>
 </template>
@@ -45,8 +44,8 @@
     data() {
       return {
         dateRange: { // used for v-model prop
-          startDate: moment().format(),
-          endDate: moment().format(),
+          startDate: new Date(),
+          endDate: new Date(),
         },
         opens: "right",//which way the picker opens, default "center", can be "left"/"right"
         locale: {
