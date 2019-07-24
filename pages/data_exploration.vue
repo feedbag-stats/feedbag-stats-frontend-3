@@ -1,31 +1,46 @@
 <template>
   <div>
     <h1 class="page-title">Data Exploration</h1>
-    <no-ssr>
-      <div class="time-picker mb-4">
-        <date-range-picker
-          v-model="dateRange"
-          @update="updateData"
-          :locale-data="locale"
-          :opens="opens"
-          :single-date-picker="true"
-          :ranges="false"
-          :time-picker24-hour="true"
-          :time-picker="true"
-          :time-picker-seconds="true"
-          :time-picker-increment="1"
-        >
-          <!--Optional scope for the input displaying the dates -->
-          <div slot="input" slot-scope="picker">
-            <font-awesome-icon :icon="['fal', 'calendar']"/>&nbsp;{{ dateRange.startDate.toLocaleDateString() }} {{
-            dateRange.startDate.toLocaleTimeString() }}
+    <div class="time-picker mb-4">
+      <date-range-picker
+        v-model="dateRange"
+        @update="updateData"
+        :locale-data="locale"
+        :opens="opens"
+        :single-date-picker="true"
+        :ranges="false"
+        :time-picker24-hour="true"
+        :time-picker="true"
+        :time-picker-seconds="true"
+        :time-picker-increment="1"
+      >
+        <!--Optional scope for the input displaying the dates -->
+        <div slot="input" slot-scope="picker">
+          <font-awesome-icon :icon="['fal', 'calendar']"/>&nbsp;{{ dateRange.startDate.toLocaleDateString() }} {{
+          dateRange.startDate.toLocaleTimeString() }}
+        </div>
+      </date-range-picker>
+    </div>
+    <div ref="eventWrapper" id="event-wrapper" class="event-wrapper">
+      <div class="scroll-block top">
+        <font-awesome-icon :class="{ 'fa-spin' : isLoading }" class="fa-fw" :icon="['fas', 'spinner']"/>&nbsp;&nbsp;Scroll
+        up for earlier events
+      </div>
+      <div class="event" v-for="event in events">
+        <div class="row">
+          <div class="col-md-3">
+            {{ prettyDate(event.instant) }}
           </div>
-        </date-range-picker>
+          <div class="col-md-9">
+            {{event.event}}
+          </div>
+        </div>
       </div>
-      <div id="event-wrapper" class="event-wrapper">
-        <div class="event" v-for="event in events">{{event}}</div>
+      <div class="scroll-block bottom">
+        <font-awesome-icon :class="{ 'fa-spin' : isLoading }" class="fa-fw" :icon="['fas', 'spinner']"/>&nbsp;&nbsp;Scroll
+        down for later events
       </div>
-    </no-ssr>
+    </div>
   </div>
 </template>
 
@@ -34,6 +49,7 @@
   import moment from 'moment';
 
   export default {
+    middleware: 'auth',
     data() {
       return {
         events: [],
@@ -61,6 +77,10 @@
       }
     },
     methods: {
+      prettyDate(instant) {
+        let momentDate = moment(instant);
+        return momentDate.format('DD.MM.YYYY, HH:mm:ss')
+      },
       async updateData() {
         this.isLoading = true;
         this.events = [];
@@ -97,7 +117,6 @@
         }
         this.updatePickerModel();
 
-        // there should be at max 7 * 12 response objects in the tddCycles array
         let events = await
           this.$axios.$get('/load_events', {
             params: {
@@ -121,9 +140,8 @@
         // we need to do this :'(
         setTimeout(function () {
           let wrapper = document.getElementById("event-wrapper");
-          console.log(wrapper);
           if (direction === "prev") {
-            wrapper.scrollTop = 50;
+            wrapper.scrollTop = 30;
           } else {
             // wrapper.scrollTop = wrapper.scrollHeight - wrapper.clientHeight - 50;
           }
@@ -144,7 +162,7 @@
           console.log('top');
           this.isLoading = true;
           this.loadMore("prev");
-        } else if (wrapper.scrollTop === wrapper.scrollHeight - wrapper.clientHeight) {
+        } else if (wrapper.scrollTop >= wrapper.scrollHeight - wrapper.clientHeight) {
           // we are at the bottom
           console.log('bottom');
           this.isLoading = true;
@@ -154,12 +172,13 @@
         }
       }
     },
-    async created() {
-      // this is hacky, but we need to wait until local storage is loaded for the token
-      if (process.browser) {
+    async mounted() {
+      document.getElementById("event-wrapper").addEventListener('scroll', this.handleScroll);
+      if (this.$store.state.vuexLoaded) {
+        this.loadMore("prev");
+      } else {
         window.onNuxtReady(async () => {
           this.loadMore("prev");
-          document.getElementById("event-wrapper").addEventListener('scroll', this.handleScroll);
         });
       }
     },
@@ -171,19 +190,27 @@
 
 <style scoped lang="scss">
   .event-wrapper {
-    width: 800px;
+    width: 100%;
     height: 500px;
     overflow: scroll;
     .event {
-      &:first-child {
-        margin-top: 150px;
-      }
-      &:last-child {
-        margin-bottom: 150px;
-      }
       height: 50px;
       background: #f4f4f4;
       margin: 2px 0;
+      padding: 10px;
+    }
+    .scroll-block {
+      .top {
+        margin-top: 20px;
+      }
+      .bottom {
+        margin-bottom: 20px;
+      }
+      padding: 40px 50px 20px;
+      height: 100px;
+      background: #dcdcdc;
+      text-align: center;
+      font-weight: bold;
     }
   }
 </style>

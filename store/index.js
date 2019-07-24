@@ -8,12 +8,16 @@ const createStore = () => {
       backendURL: "http://localhost:8080",
       token: "",
       user: null,
+      vuexLoaded : false,
     },
     mutations: {
       setUser(state, user) {
-        console.log(user);
         state.user = user;
+        state.vuexLoaded = true;
       },
+      logout(state) {
+        state.user = null;
+      }
     },
     actions: {
       login({commit, state}, token) {

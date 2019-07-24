@@ -3,9 +3,7 @@
     <h1>All Users in the Database</h1>
     <ul>
       <li v-for="user in users" :key="user.id">
-        <nuxt-link :to="localePath({'name': 'login-id', 'params': {'id': user.token}})">
-          {{ user.name }}
-        </nuxt-link>
+        {{ user.name }}
       </li>
     </ul>
   </div>

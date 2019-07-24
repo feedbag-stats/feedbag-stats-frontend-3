@@ -1,19 +1,23 @@
 <template>
   <b-container>
 
-   SHOW ERROR
+    {{error}}
 
   </b-container>
 </template>
 
 <style scoped>
-h1 {
-  margin-bottom: 10px;
-}
-.text {
-  margin-bottom: 70px;
-}
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  .text {
+    margin-bottom: 70px;
+  }
 </style>
 
 <script>
+  export default {
+    props: ['error'],
+  }
 </script>

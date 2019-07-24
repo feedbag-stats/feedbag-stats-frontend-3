@@ -4,59 +4,73 @@
       <div class="inner">
         <div class="brand">
           <h1>Feedbag<br>
-            <font-awesome-icon :icon="['fal', 'chart-bar']"/>
+            <font-awesome-icon class="fa-fw" :icon="['fal', 'chart-bar']"/>
             Stats
           </h1>
         </div>
-        <div class="menu">
-          <ul>
-            <li>
-              <nuxt-link :to="localePath('activity_what')">
-                <font-awesome-icon :icon="['fal', 'tasks']"/>
-                Activity What
-              </nuxt-link>
-            </li>
-            <li>
-              <nuxt-link :to="localePath('activity_where')">
-                <font-awesome-icon :icon="['fal', 'tasks']"/>
-                Activity Where
-              </nuxt-link>
-            </li>
-            <li>
-              <nuxt-link :to="localePath('testing')">
-                <font-awesome-icon :icon="['fal', 'tasks']"/>
-                Testing
-              </nuxt-link>
-            </li>
-            <li>
-              <nuxt-link :to="localePath('global_statistics')">
-                <font-awesome-icon :icon="['fal', 'tasks']"/>
-                Global Statistics
-              </nuxt-link>
-            </li>
-            <li>
-              <nuxt-link :to="localePath('data_exploration')">
-                <font-awesome-icon :icon="['fal', 'tasks']"/>
-                Data Exploration
-              </nuxt-link>
-            </li>
-          </ul>
+        <div v-if="this.isLoggedIn" class="loggedInMenu">
+          <div class="menu">
+            <ul>
+              <li>
+                <nuxt-link to="activity_what">
+                  <font-awesome-icon class="fa-fw" :icon="['fal', 'tasks']"/>
+                  Activity What
+                </nuxt-link>
+              </li>
+              <li>
+                <nuxt-link to="activity_where">
+                  <font-awesome-icon class="fa-fw" :icon="['fal', 'tasks']"/>
+                  Activity Where
+                </nuxt-link>
+              </li>
+              <li>
+                <nuxt-link to="testing">
+                  <font-awesome-icon class="fa-fw" :icon="['fal', 'tasks']"/>
+                  Testing
+                </nuxt-link>
+              </li>
+              <li>
+                <nuxt-link to="global_statistics">
+                  <font-awesome-icon class="fa-fw" :icon="['fal', 'tasks']"/>
+                  Global Statistics
+                </nuxt-link>
+              </li>
+              <li>
+                <nuxt-link to="data_exploration">
+                  <font-awesome-icon class="fa-fw" :icon="['fal', 'tasks']"/>
+                  Data Exploration
+                </nuxt-link>
+              </li>
+            </ul>
+          </div>
+          <div class="menu">
+            <ul>
+              <li>
+                <nuxt-link to="profile">
+                  <font-awesome-icon class="fa-fw" :icon="['fal', 'user']"/>
+                  My Profile
+                </nuxt-link>
+              </li>
+              <li>
+                <a href="#" v-on:click="logout()">
+                  <font-awesome-icon class="fa-fw" :icon="['fal', 'lock']"/>
+                  Logout
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div class="menu">
-          <ul>
-            <li>
-              <nuxt-link :to="localePath('settings')">
-                <font-awesome-icon :icon="['fal', 'cog']"/>
-                Settings
-              </nuxt-link>
-            </li>
-            <li>
-              <nuxt-link :to="localePath('users')">
-                <font-awesome-icon :icon="['fal', 'users']"/>
-                Users
-              </nuxt-link>
-            </li>
-          </ul>
+        <div v-else>
+          <div class="menu">
+            <ul>
+              <li>
+                <nuxt-link to="login">
+                  <font-awesome-icon :icon="['fal', 'lock']"/>
+                  Login
+                </nuxt-link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </no-ssr>
@@ -118,6 +132,17 @@
 
   export default {
     name: "Navigation",
-    components: {}
+    components: {},
+    computed: {
+      isLoggedIn() {
+        return null !== this.$store.state.user && "" !== this.$store.state.user;
+      },
+    },
+    methods: {
+      logout() {
+        this.$store.commit("logout");
+        this.$router.push('login');
+      }
+    }
   }
 </script>

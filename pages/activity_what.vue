@@ -12,25 +12,39 @@
       >
         <!--Optional scope for the input displaying the dates -->
         <div slot="input" slot-scope="picker">
-          <font-awesome-icon :icon="['fal', 'calendar']"/>&nbsp;{{ dateRange.startDate.toLocaleDateString() }} - {{ dateRange.endDate.toLocaleDateString() }}
+          <font-awesome-icon :icon="['fal', 'calendar']"/>&nbsp;{{ dateRange.startDate.toLocaleDateString() }} - {{
+          dateRange.endDate.toLocaleDateString() }}
         </div>
       </date-range-picker>
     </no-ssr>
     <div class="row">
-      <!--<no-ssr>
-          <highcharts
-            :updateArgs="updateArgs"
-            :options="timelineOptions"
-            ref="timelineChart"/>
-        </no-ssr>-->
-    </div>
-    <div class="col-md-4">
-      <no-ssr>
-        <highcharts
-          :updateArgs="updateArgs"
-          :options="optionsPieChart"
-          ref="pieChart"/>
-      </no-ssr>
+      <div class="col-md-8">
+        <div v-show="this.total > 0">
+          <no-ssr>
+            <highcharts
+              :updateArgs="updateArgs"
+              :options="optionsAreaChart"
+              ref="areaChart"></highcharts>
+          </no-ssr>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="distribution-cart">
+          <div v-show="this.total > 0">
+            <no-ssr>
+              <highcharts
+                :updateArgs="updateArgs"
+                :options="optionsPieChart"
+                ref="pieChart">
+              </highcharts>
+            </no-ssr>
+          </div>
+          <div v-show="this.total === 0">
+            <p>There is no data in this timespan. Please choose another timespan.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -40,6 +54,7 @@
   import moment from 'moment';
 
   export default {
+    middleware: 'auth',
     components: {},
     data() {
       return {
@@ -80,24 +95,48 @@
         time1: '',
         updateArgs: [true, true, true],
         aggregated: [],
-        timeline: [],
-        timelineOptions: {
+        days: [],
+        total: 0,
+        optionsAreaChart: {
           chart: {
-            type: 'xrange'
+            type: 'area'
           },
           title: {
-            text: 'Activities on Wednesday, 13. March 2019'
+            text: 'Activities'
           },
           xAxis: {
-            type: 'datetime'
+            tickmarkPlacement: 'on',
+            title: {
+              enabled: false
+            },
           },
           yAxis: {
             title: {
-              text: ''
+              text: 'Hours'
             },
-            categories: ['ACTIVE', 'DEBUG', 'TESTINGSTATE', 'TESTRUN', 'WRITE'],
-            reversed: true
-          }
+            labels: {
+              formatter: function () {
+                return this.value;
+              }
+            },
+            max: 10,
+          },
+          tooltip: {
+            split: true,
+            valueSuffix: ' hours '
+          },
+          plotOptions: {
+            area: {
+              stacking: 'normal',
+              lineColor: '#666666',
+              lineWidth: 1,
+              marker: {
+                lineWidth: 1,
+                lineColor: '#666666'
+              }
+            }
+          },
+          series: [{}, {}, {}, {}, {}]
         },
         optionsPieChart: {
           chart: {
@@ -132,9 +171,8 @@
     },
     methods: {
       async updateData() {
-        console.log(this.dateRange);
 
-        let aggregated = await
+        let result = await
           this.$axios.$get('/activity/aggregated', {
             params: {
               start: moment(this.dateRange.startDate).format('YYYY-MM-DD'),
@@ -144,52 +182,80 @@
               Authorization: this.$store.state.user.token
             }
           });
-        this.aggregated = aggregated;
 
-        /*
-        let timeline = await
-          this.$axios.$get('/activity/all', {
-            headers: {
-              Authorization: this.$store.state.user.token
-            }
-          });
-        this.timeline = timeline;
-        */
-        this.updateSeries();
+
+        if (result.total && result.total > 0) {
+          this.aggregated = result.aggregated;
+          this.days = result.days;
+          this.total = result.total;
+
+          this.updateSeries();
+        } else {
+          this.aggregated = [];
+          this.days = [];
+        }
       },
       updateSeries() {
 
         // pie Chart
 
         let pieChart = this.$refs.pieChart;
-        let sum = this.aggregated.reduce(function (accumulator, currentValue) {
-          return accumulator + currentValue.duration;
-        }, 0);
+        let sum = this.total;
         let data = [];
-        this.aggregated.forEach(element => {
+        Object.entries(this.aggregated).forEach(element => {
           data.push({
-            name: element.type,
-            y: (element.duration / sum) * 100,
+            name: element[0],
+            y: (element[1] / sum) * 100,
           });
         });
-        /*this.optionsPieChart.series[0] = {
-          name: 'Activities',
-          colorByPoint: true,
-          data: data,
-        };*/
-        pieChart.chart.series[0].update({
-          data: data
-        });
+
+
+        if (pieChart.chart.series.length > 0) {
+          pieChart.chart.series[0].update({
+            data: data
+          });
+        } else {
+          pieChart.chart.series[0] = {
+            name: 'Activities',
+            colorByPoint: true,
+            data: data,
+          };
+        }
+
         pieChart.chart.redraw();
 
-        /*
-        // timeline Chart
+        // Area Chart
 
-        let timelineChart = this.$refs.timelineChart;
-        let categories = ['ACTIVE', 'DEBUG', 'TESTINGSTATE', 'TESTRUN', 'WRITE'];
+        let areaChart = this.$refs.areaChart;
+
+        let series = [];
+        Object.entries(this.aggregated).forEach(element => {
+          series[element[0]] = {
+            name: element[0],
+            data: []
+          };
+        });
+
+        console.log(series);
+
+        Object.entries(this.days).forEach(day => {
+          Object.entries(day[1]).forEach(type => {
+            series[type[0]].data.push(type[1] / (60 * 60));
+          });
+        });
 
         data = [];
-        this.timeline.forEach(element => {
+        let i = 0;
+        for (let index in series) {
+          areaChart.chart.series[0].remove();
+        }
+        for (let index in series) {
+          areaChart.chart.addSeries(series[index]);
+        }
+        areaChart.chart.xAxis[0].setCategories(Object.keys(this.days));
+        areaChart.chart.redraw();
+
+        /*this.timeline.forEach(element => {
           data.push({
             x: Date.parse(element.begin),
             x2: Date.parse(element.end),
@@ -210,8 +276,7 @@
           }
         });*/
       }
-    }
-    ,
+    },
     async created() {
       // this is hacky, but we need to wait until local storage is loaded for the token
       window.onNuxtReady(async () => {

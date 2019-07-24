@@ -3,6 +3,7 @@ require('dotenv').config({
 });
 
 module.exports = {
+  mode: 'spa',
   /*
    ** Headers of the page
    */
@@ -35,7 +36,6 @@ module.exports = {
     {src: '~/plugins/highcharts.js', ssr: false},
     {src: "~/plugins/local-storage.js", ssr: false},
     {src: "~/plugins/datepicker.js", ssr: false},
-    {src: "~/plugins/i18n.js"},
   ],
   /*
    ** Customize the progress bar color
@@ -81,21 +81,6 @@ module.exports = {
   },
   modules: [
     ["bootstrap-vue/nuxt", {css: false}],
-    [
-      "nuxt-i18n",
-      {
-        locales: [
-          {code: "en", iso: "en-CH", file: "en.js", name: "E"},
-        ],
-        defaultLocale: "en",
-        detectBrowserLanguage: true,
-        lazy: true,
-        langDir: "lang/",
-        rootRedirect: "en",
-        redirectRootToLocale: "en",
-        strategy: "prefix_except_default",
-      },
-    ],
     [
       "@nuxtjs/google-analytics",
       {
