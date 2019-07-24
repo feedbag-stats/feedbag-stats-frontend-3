@@ -7,8 +7,32 @@
       <li>set visibilty?</li>
     </ul>
     <br><br>
-    <h4>My Uploads</h4>
-    <p>...</p>
+    <h4 class="mb-4">My Uploads</h4>
+    <div v-if="zips.length > 0">
+      <div class="row">
+        <div class="col-md-6 col-lg-4 col-xl-4">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>Date</th>
+              <th class="data-cell">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="zip in zips">
+              <td>{{zip.day}}</td>
+              <td class="data-cell">
+                <a href="#" v-on:click="deleteZip(zip.id)">
+                  <font-awesome-icon class="fa-fw" :icon="['fal', 'trash']"/>
+                </a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div v-else>No uploads</div>
   </div>
 </template>
 
@@ -23,9 +47,37 @@
         zips: [],
       }
     },
-    methods: {},
-    async mounted() {
+    methods: {
+      async loadData() {
+        this.zips = await
+        this.$axios.$get('/zips', {
+          headers: {
+            Authorization: this.$store.state.user.token
+          }
+        });
+      },
+      deleteZip(id) {
+        let confirmed = confirm('Do you really want to delete this zip?');
+        if (confirmed) {
+          this.$axios.$delete('/zip/'+id, {
+            headers: {
+              Authorization: this.$store.state.user.token
+            }
+          }).then(() => {
+            this.loadData();
+          });
+        }
+      }
     },
+    async mounted() {
+      if (this.$store.state.vuexLoaded) {
+        this.loadData();
+      } else {
+        window.onNuxtReady(async () => {
+          this.loadData();
+        });
+      }
+    }
   }
 </script>
 

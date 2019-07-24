@@ -19,25 +19,25 @@
               </li>
               <li>
                 <nuxt-link to="activity_where">
-                  <font-awesome-icon class="fa-fw" :icon="['fal', 'tasks']"/>
+                  <font-awesome-icon class="fa-fw" :icon="['fal', 'location']"/>
                   Activity Where
                 </nuxt-link>
               </li>
               <li>
                 <nuxt-link to="testing">
-                  <font-awesome-icon class="fa-fw" :icon="['fal', 'tasks']"/>
+                  <font-awesome-icon class="fa-fw" :icon="['fal', 'check']"/>
                   Testing
                 </nuxt-link>
               </li>
               <li>
                 <nuxt-link to="global_statistics">
-                  <font-awesome-icon class="fa-fw" :icon="['fal', 'tasks']"/>
+                  <font-awesome-icon class="fa-fw" :icon="['fal', 'globe']"/>
                   Global Statistics
                 </nuxt-link>
               </li>
               <li>
                 <nuxt-link to="data_exploration">
-                  <font-awesome-icon class="fa-fw" :icon="['fal', 'tasks']"/>
+                  <font-awesome-icon class="fa-fw" :icon="['fal', 'database']"/>
                   Data Exploration
                 </nuxt-link>
               </li>
