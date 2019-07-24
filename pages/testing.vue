@@ -1,21 +1,34 @@
 <template>
   <div>
     <h1 class="page-title">Testing</h1>
-    <no-ssr>
-      <div v-if="mapLoaded" class="map">
-        <div class="map-row days">
-          <div v-for="dayName in dayNames" class="map-cell text"><span>{{dayName}}</span></div>
+    <div class="time-picker mb-4">
+      <date-range-picker
+        v-model="datePickerRange"
+        @update="updateData"
+        :locale-data="locale"
+        :opens="opens"
+        :single-date-picker="true"
+        :ranges="false"
+      >
+        <!--Optional scope for the input displaying the dates -->
+        <div slot="input" slot-scope="picker">
+          <font-awesome-icon :icon="['fal', 'calendar']"/>&nbsp;{{ datePickerRange.endDate.toLocaleDateString() }}
         </div>
-        <div v-for="rowIndex in Array(numberOfWeeks).keys()" class="map-row">
-          <div v-for="cellIndex in Array(daysPerWeek).keys()" class="map-cell"
-               :set="cell = map[rowIndex * 7 + cellIndex]">
-            <div v-b-tooltip.html :title="'<strong>'+cell.count+'</strong> TDD Cycles on '+cell.date"
-                 :class="'background intensity-'+cell.intensity"></div>
-          </div>
-          <div class="map-cell text">#{{ weekNumberStart+rowIndex }}</div>
-        </div>
+      </date-range-picker>
+    </div>
+    <div v-if="mapLoaded" class="map">
+      <div class="map-row days">
+        <div v-for="dayName in dayNames" class="map-cell text"><span>{{dayName}}</span></div>
       </div>
-    </no-ssr>
+      <div v-for="rowIndex in Array(numberOfWeeks).keys()" class="map-row">
+        <div v-for="cellIndex in Array(daysPerWeek).keys()" class="map-cell"
+             :set="cell = map[rowIndex * 7 + cellIndex]">
+          <div v-b-tooltip.html :title="'<strong>'+cell.count+'</strong> TDD Cycles on '+cell.date"
+               :class="'background intensity-'+cell.intensity"></div>
+        </div>
+        <div class="map-cell text">#{{ (weekNumberStart+rowIndex-1)%52+1 }}</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -27,19 +40,43 @@
     data() {
       return {
         dayNames: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        numberOfWeeks: 24,
+        numberOfWeeks: 18,
         daysPerWeek: 7,
         aggregated: [],
-        dateRange: { // used for v-model prop
-          startDate: this.getStartDate(),
+        datePickerRange: { // used for v-model prop
+          startDate: this.getEndDate(),
           endDate: this.getEndDate()
         },
-        weekNumberStart: this.getWeekNumber(this.getStartDate()),
+        instant: this.getEndDate(),
+        weekNumberStart: 0,
         map: [],
-        mapLoaded: false
+        mapLoaded: false,
+        opens: "right",//which way the picker opens, default "center", can be "left"/"right",
+        locale: {
+          direction: 'ltr', //direction of text
+          format: 'DD-MM-YYYY', //fomart of the dates displayed
+          separator: ' - ', //separator between the two ranges
+          applyLabel: 'Apply',
+          cancelLabel: 'Cancel',
+          weekLabel: 'W',
+          customRangeLabel: 'Custom Range',
+          daysOfWeek: moment.weekdaysMin(), //array of days - see moment documenations for details
+          monthNames: moment.monthsShort(), //array of month names - see moment documenations for details
+          firstDay: 1, //ISO first day of week - see moment documenations for details
+          showWeekNumbers: true //show week numbers on each row of the calendar
+        },
       }
     },
     methods: {
+      updateData() {
+        let today = new Date(this.datePickerRange.startDate);
+        today.setDate(today.getDate() + (0 - 1 - today.getDay() + 7) % 7 + 1);
+
+        this.datePickerRange.startDate = today;
+        this.instant = today;
+
+        this.loadMap();
+      },
       //takes dayIndex from sunday(0) to saturday(6)
       getWeekNumber(d) {
         // Copy date so don't modify original
@@ -62,9 +99,10 @@
       getEndDate() {
         return this.nextDate(0);
       },
-      getStartDate() {
-        let daysToMove = -7 * 24
-        let monday = this.nextDate(1);
+      getStartDate(endDate) {
+        let daysToMove = -this.daysPerWeek * this.numberOfWeeks;
+        let monday = new Date(endDate);
+        monday.setDate(monday.getDate() + (1 - 1 - monday.getDay() + 7) % 7 + 1);
         monday.setDate(monday.getDate() + daysToMove);
         return monday;
       },
@@ -77,8 +115,7 @@
         let tddCycles = await
           this.$axios.$get('/tdd_cycles', {
             params: {
-              start: moment(this.dateRange.startDate).format('YYYY-MM-DD'),
-              end: moment(this.dateRange.endDate).format('YYYY-MM-DD'),
+              date: moment(this.instant).format('YYYY-MM-DD'),
             },
             headers: {
               Authorization: this.$store.state.user.token
@@ -86,9 +123,12 @@
           });
 
         let intensities = [];
-        let nextDay = this.dateRange.startDate;
-        for (let i = 0; i < 24; i++) {
-          for (let j = 0; j < 7; j++) {
+        let startDay = this.getStartDate(this.instant);
+        this.weekNumberStart = this.getWeekNumber(startDay);
+
+        let nextDay = startDay;
+        for (let i = 0; i < this.numberOfWeeks; i++) {
+          for (let j = 0; j < this.daysPerWeek; j++) {
             let dateFormat = this.formatDate(nextDay);
             intensities[dateFormat] = {
               date: dateFormat,
@@ -122,16 +162,14 @@
         this.mapLoaded = true;
       }
     },
-    async created() {
-      // this is hacky, but we need to wait until local storage is loaded for the token
-      if (process.browser) {
+    async mounted() {
+      if (this.$store.state.vuexLoaded) {
+        this.loadMap();
+      } else {
         window.onNuxtReady(async () => {
           this.loadMap();
         });
       }
-    },
-    async mounted() {
-      this.loadMap();
     }
   }
 </script>
