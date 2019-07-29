@@ -46,9 +46,9 @@
           <div class="menu">
             <ul>
               <li>
-                <nuxt-link to="profile">
-                  <font-awesome-icon class="fa-fw" :icon="['fal', 'user']"/>
-                  My Profile
+                <nuxt-link to="uploads">
+                  <font-awesome-icon class="fa-fw" :icon="['fal', 'file-upload']"/>
+                  My Uploads
                 </nuxt-link>
               </li>
               <li>

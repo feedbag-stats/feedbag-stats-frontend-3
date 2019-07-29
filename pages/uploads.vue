@@ -1,34 +1,29 @@
 <template>
   <div>
-    <h1 class="page-title">My Profile</h1>
-    <p>... maybe some profile stuff?</p>
-    <ul>
-      <li>set password</li>
-      <li>set visibilty?</li>
-    </ul>
-    <br><br>
-    <h4 class="mb-4">My Uploads</h4>
+    <h1 class="page-title">My Uploads</h1>
     <div v-if="zips.length > 0">
       <div class="row">
-        <div class="col-md-6 col-lg-6 col-xl-4">
+        <div class="col-md-9 col-lg-9 col-xl-6">
           <table class="table table-striped">
             <thead>
             <tr>
               <th>Date</th>
-              <td></td>
+              <th class="text-center"># Uploads</th>
+              <th>&nbsp;</th>
               <th class="data-cell">Action</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="zip in zips">
               <td>{{zip.day}}</td>
+              <td class="text-center">{{zip.count}}</td>
               <td>
                 <span class="marked-for-deletion" v-if="zip.markedForDelete">
                  marked for deletion
                 </span>
               </td>
               <td class="data-cell">
-                <a href="#" v-on:click="toggleZipStatus(zip.id, zip.markedForDelete ? 'restore' : 'delete')">
+                <a href="#" v-on:click="toggleZipStatus(zip.day, zip.markedForDelete ? 'restore' : 'delete')">
                   <font-awesome-icon v-if="zip.markedForDelete" class="fa-fw" :icon="['fal', 'recycle']"/>
                   <font-awesome-icon v-if="!zip.markedForDelete" class="fa-fw" :icon="['fal', 'trash']"/>
                 </a>
@@ -57,23 +52,28 @@
     methods: {
       async loadData() {
         this.zips = await
-        this.$axios.$get('/zips', {
-          headers: {
-            Authorization: this.$store.state.user.token
-          }
-        });
+          this.$axios.$get('/zips', {
+            headers: {
+              Authorization: this.$store.state.user.token
+            }
+          });
       },
-      toggleZipStatus(id, state = 'delete') {
+      toggleZipStatus(day, state = 'delete') {
         let confirmed = true;
         if (state === 'delete') {
           confirmed = confirm('Do you really want to delete this zip?');
         }
         if (confirmed) {
-          this.$axios.$post('/zip/' + id, {}, {
-            headers: {
-              Authorization: this.$store.state.user.token
+          this.$axios.$post('/zips/toggle_status', {},
+            {
+              params: {
+                date: day,
+              },
+              headers: {
+                Authorization: this.$store.state.user.token
+              }
             }
-          }).then(() => {
+          ).then(() => {
             this.loadData();
           });
         }
