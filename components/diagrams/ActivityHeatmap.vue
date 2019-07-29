@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="page-title">Testing</h1>
+    <h4>Activity Heatmap</h4>
     <div class="time-picker mb-4">
       <date-range-picker
         v-model="datePickerRange"
@@ -30,7 +30,7 @@
       <div v-for="rowIndex in Array(numberOfWeeks).keys()" class="map-row">
         <div v-for="cellIndex in Array(daysPerWeek).keys()" class="map-cell"
              :set="cell = map[rowIndex * 7 + cellIndex]">
-          <div v-b-tooltip.html :title="'<strong>'+cell.count+'</strong> TDD Cycles on '+cell.date"
+          <div v-b-tooltip.html :title="'<strong>'+cell.count+'</strong> Activites on '+cell.date"
                :class="'background intensity-'+cell.intensity"></div>
         </div>
         <div class="map-cell text">#{{ (weekNumberStart+rowIndex-1)%52+1 }}</div>
@@ -51,6 +51,7 @@
   import moment from 'moment';
 
   export default {
+    name: 'ActivityHeatmap',
     data() {
       return {
         dayNames: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
@@ -149,10 +150,10 @@
         this.loadMap();
       },
       async loadMap() {
-        // there should be at max 7 * 12 response objects in the tddCycles array
+        // there should be at max 7 * 12 response objects in the heatmapEntries array
 
-        let tddCycles = await
-          this.$axios.$get('/tdd_cycles', {
+        let heatmapEntries = await
+          this.$axios.$get('/activity/heatmap', {
             params: {
               date: moment(this.instant).format('YYYY-MM-DD'),
             },
@@ -178,15 +179,15 @@
           }
         }
 
-        const biggestValue = Math.max.apply(Math, tddCycles.map(function (o) {
-          return o.cycleCount;
+        const biggestValue = Math.max.apply(Math, heatmapEntries.map(function (o) {
+          return o.count;
         }));
 
-        tddCycles.forEach(function (element) {
+        heatmapEntries.forEach(function (element) {
           intensities[element.date] = {
             date: element.date,
-            count: element.cycleCount,
-            intensity: (Math.round(element.cycleCount / biggestValue * 10) / 10) * 10,
+            count: element.count,
+            intensity: (Math.round(element.count / biggestValue * 10) / 10) * 10,
           };
         });
 

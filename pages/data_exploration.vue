@@ -25,7 +25,8 @@
       </div>
       <div class="col-md-4">
         <div class="float-right">
-          <a class="btn btn-secondary" target="_blank" href="http://www.kave.cc/feedbag/event-generation#TOC-Current-Events">
+          <a class="btn btn-secondary" target="_blank"
+             href="http://www.kave.cc/feedbag/event-generation#TOC-Current-Events">
             <font-awesome-icon class="fa-fw" :icon="['fal', 'file']"/>&nbsp;&nbsp;View Event Documentation
           </a>
         </div>
@@ -38,14 +39,19 @@
       </div>
       <div class="event" v-for="event in events">
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-3 col-sm-3">
             {{ prettyDate(event.instant) }}
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4 col-sm-5">
             {{event.event}}
           </div>
-          <div class="col-md-6">
-            {{event.payload}}
+          <div class="col-md-3 col-sm-5">
+            Version: {{event.version}}
+          </div>
+          <div class="col-md-2 col-sm-1">
+            <button v-on:click="loadInfoModal(event.id)" class="btn btn-secondary btn-info float-right">
+              <font-awesome-icon class="fa-fw" :icon="['fas', 'info']"/>
+            </button>
           </div>
         </div>
       </div>
@@ -54,6 +60,24 @@
         down for later events
       </div>
     </div>
+    <b-modal :hide-cancel="true" size="lg" id="eventModal" title="Event Information" ref="modal">
+      <div v-if="modal.loading || modal.event === null">
+        <font-awesome-icon class="fa-spin fa-fw big-spinner" :icon="['fas', 'spinner']"/>
+      </div>
+      <div v-else>
+        <h5>Event</h5>
+        <p>{{modal.event.event}}</p>
+        <h5>Payload</h5>
+        <pre>{{ modal.event.payload }}</pre>
+        <h5>Version</h5>
+        {{modal.event.version}}
+      </div>
+      <template slot="modal-footer" slot-scope="{ ok, cancel, hide }">
+        <b-button size="md" variant="primary" @click="ok()">
+          OK
+        </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -87,6 +111,10 @@
           firstDay: 1, //ISO first day of week - see moment documenations for details
           showWeekNumbers: true //show week numbers on each row of the calendar
         },
+        modal: {
+          loading: false,
+          event: null,
+        }
       }
     },
     methods: {
@@ -160,8 +188,7 @@
           }
         }, 500);
 
-      }
-      ,
+      },
       handleScroll(event) {
         if (this.isLoading) {
           return;
@@ -172,17 +199,28 @@
 
         if (wrapper.scrollTop === 0) {
           // we are at top, lets load previous ones..
-          console.log('top');
           this.isLoading = true;
           this.loadMore("prev");
         } else if (wrapper.scrollTop >= wrapper.scrollHeight - wrapper.clientHeight) {
           // we are at the bottom
-          console.log('bottom');
           this.isLoading = true;
           this.loadMore("next");
         } else {
           // do nothing
         }
+      },
+      async loadInfoModal(id) {
+        this.modal.loading = true;
+        this.$refs.modal.show();
+        this.modal.event = await this.$axios.$get('/event/show', {
+          params: {
+            id: id,
+          },
+          headers: {
+            Authorization: this.$store.state.user.token
+          }
+        });
+        this.modal.loading = false;
       }
     },
     async mounted() {
@@ -225,5 +263,11 @@
       text-align: center;
       font-weight: bold;
     }
+  }
+
+  .btn-info {
+    font-size: 12px;
+    padding: 0.2rem 0.4rem;
+    vertical-align: top;
   }
 </style>

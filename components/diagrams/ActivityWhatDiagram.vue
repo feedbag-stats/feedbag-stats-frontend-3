@@ -1,23 +1,59 @@
 <template>
   <div>
-    <ActivityWhatDiagram/>
-    <hr class="mb-5 mt-5">
-    <ActivityHeatmap/>
-  </div>
+    <h1 class="page-title">Activity What Page</h1>
+    <no-ssr>
+      <date-range-picker
+        v-model="dateRange"
+        @update="updateData"
+        :locale-data="locale"
+        :opens="opens"
+      >
+        <!--Optional scope for the input displaying the dates -->
+        <div slot="input" slot-scope="picker">
+          <font-awesome-icon :icon="['fal', 'calendar']"/>&nbsp;{{ dateRange.startDate.toLocaleDateString() }} - {{
+          dateRange.endDate.toLocaleDateString() }}
+        </div>
+      </date-range-picker>
+    </no-ssr>
+    <div class="row">
+      <div class="col-md-8">
+        <div v-show="this.total > 0">
+          <no-ssr>
+            <highcharts
+              :updateArgs="updateArgs"
+              :options="optionsAreaChart"
+              ref="areaChart"></highcharts>
+          </no-ssr>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="distribution-cart">
+          <div v-show="this.total > 0">
+            <no-ssr>
+              <highcharts
+                :updateArgs="updateArgs"
+                :options="optionsPieChart"
+                ref="pieChart">
+              </highcharts>
+            </no-ssr>
+          </div>
+          <div v-show="this.total === 0">
+            <p>There is no data in this timespan. Please choose another timespan.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
 </template>
 
 <script>
 
   import moment from 'moment';
-  import ActivityWhatDiagram from '~/components/diagrams/ActivityWhatDiagram.vue';
-  import ActivityHeatmap from '~/components/diagrams/ActivityHeatmap.vue';
 
   export default {
-    middleware: 'auth',
-    components: {
-      ActivityWhatDiagram,
-      ActivityHeatmap
-    },
+    name: "ActivityWhatDiagram",
+    components: {},
     data() {
       return {
         dateRange: { // used for v-model prop
