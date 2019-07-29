@@ -10,20 +10,27 @@
     <h4 class="mb-4">My Uploads</h4>
     <div v-if="zips.length > 0">
       <div class="row">
-        <div class="col-md-6 col-lg-4 col-xl-4">
+        <div class="col-md-6 col-lg-6 col-xl-4">
           <table class="table table-striped">
             <thead>
             <tr>
               <th>Date</th>
+              <td></td>
               <th class="data-cell">Action</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="zip in zips">
               <td>{{zip.day}}</td>
+              <td>
+                <span class="marked-for-deletion" v-if="zip.markedForDelete">
+                 marked for deletion
+                </span>
+              </td>
               <td class="data-cell">
-                <a href="#" v-on:click="deleteZip(zip.id)">
-                  <font-awesome-icon class="fa-fw" :icon="['fal', 'trash']"/>
+                <a href="#" v-on:click="toggleZipStatus(zip.id, zip.markedForDelete ? 'restore' : 'delete')">
+                  <font-awesome-icon v-if="zip.markedForDelete" class="fa-fw" :icon="['fal', 'recycle']"/>
+                  <font-awesome-icon v-if="!zip.markedForDelete" class="fa-fw" :icon="['fal', 'trash']"/>
                 </a>
               </td>
             </tr>
@@ -56,10 +63,13 @@
           }
         });
       },
-      deleteZip(id) {
-        let confirmed = confirm('Do you really want to delete this zip?');
+      toggleZipStatus(id, state = 'delete') {
+        let confirmed = true;
+        if (state === 'delete') {
+          confirmed = confirm('Do you really want to delete this zip?');
+        }
         if (confirmed) {
-          this.$axios.$delete('/zip/'+id, {
+          this.$axios.$post('/zip/' + id, {}, {
             headers: {
               Authorization: this.$store.state.user.token
             }
@@ -82,28 +92,7 @@
 </script>
 
 <style scoped lang="scss">
-  .event-wrapper {
-    width: 100%;
-    height: 500px;
-    overflow: scroll;
-    .event {
-      height: 50px;
-      background: #f4f4f4;
-      margin: 2px 0;
-      padding: 10px;
-    }
-    .scroll-block {
-      .top {
-        margin-top: 20px;
-      }
-      .bottom {
-        margin-bottom: 20px;
-      }
-      padding: 40px 50px 20px;
-      height: 100px;
-      background: #dcdcdc;
-      text-align: center;
-      font-weight: bold;
-    }
+  .marked-for-deletion {
+    color: red;
   }
 </style>

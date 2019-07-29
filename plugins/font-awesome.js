@@ -14,12 +14,14 @@ import {
   faCheck,
   faLocation,
   faDatabase,
-  faTrash
+  faTrash,
+  faFile,
+  faRecycle
 } from "@fortawesome/pro-light-svg-icons";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 
 config.autoAddCss = false;
 
-library.add(faChartBar, faTasks, faUser, faCog, faUsers, faCalendar, faLock, faSpinner, faGlobe, faCheck, faLocation, faDatabase, faTrash);
+library.add(faChartBar, faTasks, faUser, faCog, faUsers, faCalendar, faLock, faSpinner, faGlobe, faCheck, faLocation, faDatabase, faTrash, faFile, faRecycle);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);

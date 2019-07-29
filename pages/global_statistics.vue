@@ -17,8 +17,7 @@
       </date-range-picker>
     </div>
     <div v-if="this.statsLoaded">
-
-      <table class="table">
+      <table class="table table-hover">
         <tbody>
         <tr class="table-secondary">
           <th></th>
@@ -40,73 +39,84 @@
         <tr class="table-secondary">
           <th style="width: 400px">Activity Statistics</th>
           <template v-for="interval in intervals">
-          <td></td>
-          <td></td>
+            <td></td>
+            <td></td>
           </template>
         </tr>
         <tr>
-          <td>Number of sessions</td>
+          <td>Average daily sessions</td>
           <template v-for="interval in intervals">
             <td class="data-cell left">
-              {{ roundNumber(statistics[interval].user.numSessions,2) }}
+              {{ prettyPrint(statistics[interval].user.numSessions,2) }}
             </td>
             <td class="data-cell right">{{
-              roundNumber(statistics[interval].global.numSessions,2) }}
-            </td>
-          </template>
-        </tr>
-        <tr>
-          <td>Number of sessions longer than 10 minutes</td>
-          <template v-for="interval in intervals">
-            <td class="data-cell left">
-              {{ roundNumber(statistics[interval].user.numSessionsLongerThanTenMin,2) }}
-            </td>
-            <td class="data-cell right">{{
-              roundNumber(statistics[interval].global.numSessionsLongerThanTenMin,2) }}
+              prettyPrint(statistics[interval].global.numSessions,2) }}
             </td>
           </template>
         </tr>
         <tr>
-          <td>Session duration</td>
+          <td>Average daily work duration</td>
           <template v-for="interval in intervals">
             <td class="data-cell left">
-              {{ roundNumber((statistics[interval].user.totalSessionDurationMillis/1000/60/60),2) }} h
+              {{ prettyPrint((statistics[interval].user.totalSessionDurationMillis/1000/60/60),2,'h') }}
             </td>
             <td class="data-cell right">{{
-              roundNumber((statistics[interval].global.totalSessionDurationMillis/1000/60/60),2) }} h
+              prettyPrint((statistics[interval].global.totalSessionDurationMillis/1000/60/60),2,'h') }}
             </td>
           </template>
         </tr>
         <tr>
-          <td>Number of Breaks</td>
+          <td>Average session duration</td>
           <template v-for="interval in intervals">
             <td class="data-cell left">
-              {{ roundNumber(statistics[interval].user.breaks,2) }}
+              {{ prettyPrint((statistics[interval].user.sessionDuration/1000/60),2, 'min') }}
             </td>
             <td class="data-cell right">{{
-              roundNumber(statistics[interval].global.breaks,2) }}
+              prettyPrint((statistics[interval].global.sessionDuration/1000/60),2, 'min') }}
             </td>
           </template>
         </tr>
         <tr>
-          <td>Number of Package Switches</td>
+          <td>Average daily sessions longer than 10 minutes</td>
           <template v-for="interval in intervals">
             <td class="data-cell left">
-              {{ roundNumber(statistics[interval].user.packageSwitches,2) }}
+              {{ prettyPrint(statistics[interval].user.numSessionsLongerThanTenMin,2) }}
             </td>
             <td class="data-cell right">{{
-              roundNumber(statistics[interval].global.packageSwitches,2) }}
+              prettyPrint(statistics[interval].global.numSessionsLongerThanTenMin,2) }}
             </td>
           </template>
         </tr>
         <tr>
-          <td>Number of Solution Switches</td>
+          <td>Average daily breaks</td>
           <template v-for="interval in intervals">
             <td class="data-cell left">
-              {{ roundNumber(statistics[interval].user.solutionSwitches,2) }}
+              {{ prettyPrint(statistics[interval].user.breaks,2) }}
             </td>
             <td class="data-cell right">{{
-              roundNumber(statistics[interval].global.solutionSwitches,2) }}
+              prettyPrint(statistics[interval].global.breaks,2) }}
+            </td>
+          </template>
+        </tr>
+        <tr>
+          <td>Average daily package switches</td>
+          <template v-for="interval in intervals">
+            <td class="data-cell left">
+              {{ prettyPrint(statistics[interval].user.packageSwitches,2) }}
+            </td>
+            <td class="data-cell right">{{
+              prettyPrint(statistics[interval].global.packageSwitches,2) }}
+            </td>
+          </template>
+        </tr>
+        <tr>
+          <td>Average daily solution switches</td>
+          <template v-for="interval in intervals">
+            <td class="data-cell left">
+              {{ prettyPrint(statistics[interval].user.solutionSwitches,2) }}
+            </td>
+            <td class="data-cell right">{{
+              prettyPrint(statistics[interval].global.solutionSwitches,2) }}
             </td>
           </template>
         </tr>
@@ -118,24 +128,24 @@
           </template>
         </tr>
         <tr>
-          <td>Number of tests run</td>
+          <td>Average daily tests runs</td>
           <template v-for="interval in intervals">
-            <td class="data-cell left">{{ statistics[interval].user.testsRun }}</td>
-            <td class="data-cell right">{{ statistics[interval].global.testsRun }}</td>
+            <td class="data-cell left">{{ prettyPrint(statistics[interval].user.testsRun,2) }}</td>
+            <td class="data-cell right">{{ prettyPrint(statistics[interval].global.testsRun,2) }}</td>
           </template>
         </tr>
         <tr>
-          <td>Number of tests successfull</td>
+          <td>Average daily sucessful test runs</td>
           <template v-for="interval in intervals">
-            <td class="data-cell left">{{ statistics[interval].user.successfulTests }}</td>
-            <td class="data-cell right">{{ statistics[interval].global.successfulTests }}</td>
+            <td class="data-cell left">{{ prettyPrint(statistics[interval].user.successfulTests,2) }}</td>
+            <td class="data-cell right">{{ prettyPrint(statistics[interval].global.successfulTests,2) }}</td>
           </template>
         </tr>
         <tr>
-          <td>Number of tests fixed</td>
+          <td>Average daily fixed tests</td>
           <template v-for="interval in intervals">
-            <td class="data-cell left">{{ statistics[interval].user.testsFixed }}</td>
-            <td class="data-cell right">{{ statistics[interval].global.testsFixed }}</td>
+            <td class="data-cell left">{{ prettyPrint(statistics[interval].user.testsFixed,2) }}</td>
+            <td class="data-cell right">{{ prettyPrint(statistics[interval].global.testsFixed,2) }}</td>
           </template>
         </tr>
         <tr class="table-secondary">
@@ -146,46 +156,46 @@
           </template>
         </tr>
         <tr>
-          <td>Number of commits</td>
+          <td>Average daily commits</td>
           <template v-for="interval in intervals">
             <td class="data-cell left">
-              {{ roundNumber(statistics[interval].user.commits,2) }}
+              {{ prettyPrint(statistics[interval].user.commits,2) }}
             </td>
             <td class="data-cell right">{{
-              roundNumber(statistics[interval].global.commits,2) }}
+              prettyPrint(statistics[interval].global.commits,2) }}
             </td>
           </template>
         </tr>
         <tr>
-          <td>Number of executions/builds</td>
+          <td>Average daily builds</td>
           <template v-for="interval in intervals">
             <td class="data-cell left">
-              {{ roundNumber(statistics[interval].user.buildCount,2) }}
+              {{ prettyPrint(statistics[interval].user.buildCount,2) }}
             </td>
             <td class="data-cell right">{{
-              roundNumber(statistics[interval].global.buildCount,2) }}
+              prettyPrint(statistics[interval].global.buildCount,2) }}
             </td>
           </template>
         </tr>
         <tr>
-          <td>Number of files edited</td>
+          <td>Average daily files edited</td>
           <template v-for="interval in intervals">
             <td class="data-cell left">
-              {{ roundNumber(statistics[interval].user.filesEdited,2) }}
+              {{ prettyPrint(statistics[interval].user.filesEdited,2) }}
             </td>
             <td class="data-cell right">{{
-              roundNumber(statistics[interval].global.filesEdited,2) }}
+              prettyPrint(statistics[interval].global.filesEdited,2) }}
             </td>
           </template>
         </tr>
         <tr>
-          <td>Build Duration</td>
+          <td>Average build duration</td>
           <template v-for="interval in intervals">
             <td class="data-cell left">
-              {{ roundNumber(statistics[interval].user.totalBuildDurationInMs/1000,2) }} s
+              {{ prettyPrint(statistics[interval].user.buildDuration/1000,2,'s') }}
             </td>
             <td class="data-cell right">{{
-              roundNumber(statistics[interval].global.totalBuildDurationInMs/1000,2) }} s
+              prettyPrint(statistics[interval].global.buildDuration/1000,2,'s') }}
             </td>
           </template>
         </tr>
@@ -207,7 +217,7 @@
         statistics: {},
         statsLoaded: false,
         dateRange: { // used for v-model prop
-          startDate: new Date('2016-10-23'),
+          startDate: new Date(),
           endDate: new Date(),
         },
         opens: "right",//which way the picker opens, default "center", can be "left"/"right",
@@ -227,18 +237,12 @@
       }
     },
     methods: {
-      roundNumber(num, scale) {
-        console.log(num, scale);
-        if (!("" + num).includes("e")) {
-          return +(Math.round(num + "e+" + scale) + "e-" + scale);
-        } else {
-          var arr = ("" + num).split("e");
-          var sig = ""
-          if (+arr[1] + scale > 0) {
-            sig = "+";
-          }
-          return +(Math.round(+arr[0] + "e" + sig + (+arr[1] + scale)) + "e-" + scale);
+      prettyPrint(num, scale, unit = '') {
+        if (num === 0) {
+          return '-';
         }
+        let value = Math.round(num * Math.pow(10,scale)) / Math.pow(10,scale);
+        return value + ' ' + unit;
       },
       async loadData() {
         this.statistics = await
@@ -260,9 +264,13 @@
     },
     async mounted() {
       if (this.$store.state.vuexLoaded) {
+        this.dateRange.startDate = new Date(this.$store.state.user.lastUpload);
+        this.dateRange.endDate = new Date(this.$store.state.user.lastUpload);
         this.loadData();
       } else {
         window.onNuxtReady(async () => {
+          this.dateRange.startDate = new Date(this.$store.state.user.lastUpload);
+          this.dateRange.endDate = new Date(this.$store.state.user.lastUpload);
           this.loadData();
         });
       }
@@ -280,6 +288,7 @@
       border-right: 1px solid black;
     }
   }
+
   .table-secondary {
     td, th {
       border-top: 3px solid black;

@@ -44,10 +44,10 @@
         daysPerWeek: 7,
         aggregated: [],
         datePickerRange: { // used for v-model prop
-          startDate: this.getEndDate(),
-          endDate: this.getEndDate()
+          startDate: new Date(),
+          endDate: new Date(),
         },
-        instant: this.getEndDate(),
+        instant: new Date(),
         weekNumberStart: 0,
         map: [],
         mapLoaded: false,
@@ -96,8 +96,10 @@
         today.setDate(today.getDate() + (dayIndex - 1 - today.getDay() + 7) % 7 + 1);
         return today;
       },
-      getEndDate() {
-        return this.nextDate(0);
+      getEndDate(date) {
+        let today = new Date(date);
+        today.setDate(today.getDate() + (0 - 1 - today.getDay() + 7) % 7 + 1);
+        return today;
       },
       getStartDate(endDate) {
         let daysToMove = -this.daysPerWeek * this.numberOfWeeks;
@@ -164,9 +166,15 @@
     },
     async mounted() {
       if (this.$store.state.vuexLoaded) {
+        let endDate = this.getEndDate(this.$store.state.user.lastUpload);
+        this.instant = endDate;
+        this.datePickerRange.endDate = endDate;
         this.loadMap();
       } else {
         window.onNuxtReady(async () => {
+          let endDate = this.getEndDate(this.$store.state.user.lastUpload);
+          this.instant = endDate;
+          this.datePickerRange.endDate = endDate;
           this.loadMap();
         });
       }

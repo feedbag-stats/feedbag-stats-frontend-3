@@ -1,25 +1,35 @@
 <template>
   <div>
     <h1 class="page-title">Data Exploration</h1>
-    <div class="time-picker mb-4">
-      <date-range-picker
-        v-model="dateRange"
-        @update="updateData"
-        :locale-data="locale"
-        :opens="opens"
-        :single-date-picker="true"
-        :ranges="false"
-        :time-picker24-hour="true"
-        :time-picker="true"
-        :time-picker-seconds="true"
-        :time-picker-increment="1"
-      >
-        <!--Optional scope for the input displaying the dates -->
-        <div slot="input" slot-scope="picker">
-          <font-awesome-icon :icon="['fal', 'calendar']"/>&nbsp;{{ dateRange.startDate.toLocaleDateString() }} {{
-          dateRange.startDate.toLocaleTimeString() }}
+    <div class="row">
+      <div class="col-md-8">
+        <div class="time-picker mb-4">
+          <date-range-picker
+            v-model="dateRange"
+            @update="updateData"
+            :locale-data="locale"
+            :opens="opens"
+            :single-date-picker="true"
+            :ranges="false"
+            :time-picker24-hour="true"
+            :time-picker="true"
+            :time-picker-seconds="true"
+            :time-picker-increment="1"
+          >
+            <!--Optional scope for the input displaying the dates -->
+            <div slot="input" slot-scope="picker">
+              <font-awesome-icon :icon="['fal', 'calendar']"/>&nbsp;{{ prettyDate(dateRange.startDate) }}
+            </div>
+          </date-range-picker>
         </div>
-      </date-range-picker>
+      </div>
+      <div class="col-md-4">
+        <div class="float-right">
+          <a class="btn btn-secondary" target="_blank" href="http://www.kave.cc/feedbag/event-generation#TOC-Current-Events">
+            <font-awesome-icon class="fa-fw" :icon="['fal', 'file']"/>&nbsp;&nbsp;View Event Documentation
+          </a>
+        </div>
+      </div>
     </div>
     <div ref="eventWrapper" id="event-wrapper" class="event-wrapper">
       <div class="scroll-block top">
@@ -31,8 +41,11 @@
           <div class="col-md-3">
             {{ prettyDate(event.instant) }}
           </div>
-          <div class="col-md-9">
+          <div class="col-md-3">
             {{event.event}}
+          </div>
+          <div class="col-md-6">
+            {{event.payload}}
           </div>
         </div>
       </div>
