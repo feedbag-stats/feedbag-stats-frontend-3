@@ -1,19 +1,31 @@
 <template>
   <div>
-    <div class="time-picker mb-4">
-      <date-range-picker
-        v-model="dateRange"
-        @update="updateData"
-        :locale-data="locale"
-        :opens="opens"
-        :single-date-picker="true"
-        :ranges="false"
-      >
-        <!--Optional scope for the input displaying the dates -->
-        <div slot="input" slot-scope="picker">
-          <font-awesome-icon :icon="['fal', 'calendar']"/>&nbsp;{{ dateRange.startDate.toLocaleDateString() }}
+    <div class="row">
+      <div class="col-md-6">
+        <div class="time-picker mb-4">
+          <date-range-picker
+            v-model="dateRange"
+            @update="updateData"
+            :locale-data="locale"
+            :opens="opens"
+            :single-date-picker="true"
+            :ranges="false"
+          >
+            <!--Optional scope for the input displaying the dates -->
+            <div slot="input" slot-scope="picker">
+              <font-awesome-icon :icon="['fal', 'calendar']"/>&nbsp;{{ dateRange.startDate.toLocaleDateString() }}
+            </div>
+          </date-range-picker>
         </div>
-      </date-range-picker>
+      </div>
+      <div class="col-md-6">
+        <div class="float-right">
+          <div style="text-align: right">
+            <font-awesome-icon :icon="['fal', 'user']"/> = Me<br>
+            <font-awesome-icon :icon="['fal', 'globe']"/> = Global
+          </div>
+        </div>
+      </div>
     </div>
     <div v-if="this.statsLoaded">
       <table class="table table-hover">
