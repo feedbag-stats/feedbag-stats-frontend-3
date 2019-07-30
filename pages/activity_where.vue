@@ -94,7 +94,6 @@
     },
     methods: {
       async loadData() {
-        this.dateRange.startDate = new Date('2016-05-16');
         this.statistics = await
           this.$axios.$get('/location', {
             params: {
@@ -105,7 +104,6 @@
               Authorization: this.$store.state.user.token
             }
           });
-        console.log(this.statistics);
         this.updateChart();
       },
       updateChart() {
