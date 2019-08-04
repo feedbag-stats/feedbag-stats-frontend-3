@@ -152,7 +152,7 @@
       async loadMap() {
         // there should be at max 7 * 12 response objects in the heatmapEntries array
 
-        let heatmapEntries = await
+        let data = await
           this.$axios.$get('/activity/heatmap', {
             params: {
               date: moment(this.instant).format('YYYY-MM-DD'),
@@ -162,6 +162,7 @@
             }
           });
 
+        let heatmapEntries = data.stats;
         let intensities = [];
         let startDay = this.getStartDate(this.instant);
         this.weekNumberStart = this.getWeekNumber(startDay);
@@ -179,17 +180,20 @@
           }
         }
 
-        const biggestValue = Math.max.apply(Math, heatmapEntries.map(function (o) {
-          return o.count;
-        }));
+        const biggestValue = data.max;
 
         heatmapEntries.forEach(function (element) {
+          let intensity = Math.min((Math.round(element.count / biggestValue * 10) / 10) * 10, 10);
+          if (element.count > 10 && intensity === 0) {
+            intensity = "min";
+          }
           intensities[element.date] = {
             date: element.date,
             count: element.count,
-            intensity: (Math.round(element.count / biggestValue * 10) / 10) * 10,
+            intensity: intensity
           };
         });
+        console.log(intensities);
 
         let map = [];
         let i = 0;

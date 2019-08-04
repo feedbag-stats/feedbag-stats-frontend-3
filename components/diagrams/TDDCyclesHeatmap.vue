@@ -151,7 +151,7 @@
       async loadMap() {
         // there should be at max 7 * 12 response objects in the tddCycles array
 
-        let tddCycles = await
+        let data = await
           this.$axios.$get('/testing/tdd_cycles', {
             params: {
               date: moment(this.instant).format('YYYY-MM-DD'),
@@ -161,6 +161,7 @@
             }
           });
 
+        let tddCycles = data.stats;
         let intensities = [];
         let startDay = this.getStartDate(this.instant);
         this.weekNumberStart = this.getWeekNumber(startDay);
@@ -178,15 +179,17 @@
           }
         }
 
-        const biggestValue = Math.max.apply(Math, tddCycles.map(function (o) {
-          return o.cycleCount;
-        }));
+        const biggestValue = data.max;
 
         tddCycles.forEach(function (element) {
+          let intensity = Math.min((Math.round(element.cycleCount / biggestValue * 10) / 10) * 10, 10);
+          if (element.count > 1 && intensity === 0) {
+            intensity = "min";
+          }
           intensities[element.date] = {
             date: element.date,
             count: element.cycleCount,
-            intensity: (Math.round(element.cycleCount / biggestValue * 10) / 10) * 10,
+            intensity: intensity,
           };
         });
 

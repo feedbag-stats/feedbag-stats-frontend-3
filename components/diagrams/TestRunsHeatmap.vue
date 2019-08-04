@@ -151,7 +151,7 @@
       async loadMap() {
         // there should be at max 7 * 12 response objects in the testRuns array
 
-        let testRuns = await
+        let data = await
           this.$axios.$get('/testing/testruns', {
             params: {
               date: moment(this.instant).format('YYYY-MM-DD'),
@@ -161,6 +161,8 @@
             }
           });
 
+
+        let testRuns = data.stats;
         let intensities = [];
         let startDay = this.getStartDate(this.instant);
         this.weekNumberStart = this.getWeekNumber(startDay);
@@ -178,15 +180,17 @@
           }
         }
 
-        const biggestValue = Math.max.apply(Math, testRuns.map(function (o) {
-          return o.testsRun;
-        }));
+        const biggestValue = data.max;
 
         testRuns.forEach(function (element) {
+          let intensity = Math.min((Math.round(element.testsRun / biggestValue * 10) / 10) * 10, 10);
+          if (element.count > 10 && intensity === 0) {
+            intensity = "min";
+          }
           intensities[element.date] = {
             date: element.date,
             count: element.testsRun,
-            intensity: (Math.round(element.testsRun / biggestValue * 10) / 10) * 10,
+            intensity: intensity,
           };
         });
 
