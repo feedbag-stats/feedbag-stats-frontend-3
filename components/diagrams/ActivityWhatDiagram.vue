@@ -44,7 +44,7 @@
         </div>
       </div>
     </div>
-    </div>
+  </div>
 </template>
 
 <script>
@@ -56,6 +56,12 @@
     components: {},
     data() {
       return {
+        colors: {
+          Active: '#36A2FF',
+          Write: '#24FF73',
+          Testingstate: '#C426EB',
+          Debug: '#FF7734'
+        },
         dateRange: { // used for v-model prop
           startDate: new Date(),
           endDate: new Date(),
@@ -181,16 +187,19 @@
             }
           });
 
+        console.log(result);
 
         if (result.total && result.total > 0) {
           this.aggregated = result.aggregated;
           this.days = result.days;
           this.total = result.total;
+          this.typeDays = result.typeDays;
 
           this.updateSeries();
         } else {
           this.aggregated = [];
           this.days = [];
+          this.typeDays = [];
         }
       },
       updateSeries() {
@@ -201,9 +210,11 @@
         let sum = this.total;
         let data = [];
         Object.entries(this.aggregated).forEach(element => {
+          let name = element[0].charAt(0).toUpperCase() + element[0].slice(1).toLowerCase();
           data.push({
-            name: element[0],
+            name: name,
             y: (element[1] / sum) * 100,
+            color: this.colors[name],
           });
         });
 
@@ -228,17 +239,18 @@
 
         let series = [];
         Object.entries(this.aggregated).forEach(element => {
+          let name = element[0].charAt(0).toUpperCase() + element[0].slice(1).toLowerCase();
           series[element[0]] = {
-            name: element[0],
-            data: []
+            name: name,
+            data: [],
+            color: this.colors[name],
           };
         });
 
-        console.log(series);
-
-        Object.entries(this.days).forEach(day => {
-          Object.entries(day[1]).forEach(type => {
-            series[type[0]].data.push(type[1] / (60 * 60));
+        this.typeDays.forEach(day => {
+          Object.entries(day).forEach(type => {
+            let hours = Math.round((type[1] / (60 * 60)) * 100) / 100;
+            series[type[0]].data.push(hours);
           });
         });
 
@@ -250,7 +262,7 @@
         for (let index in series) {
           areaChart.chart.addSeries(series[index]);
         }
-        areaChart.chart.xAxis[0].setCategories(Object.keys(this.days));
+        areaChart.chart.xAxis[0].setCategories(this.days);
         areaChart.chart.redraw();
 
         /*this.timeline.forEach(element => {
