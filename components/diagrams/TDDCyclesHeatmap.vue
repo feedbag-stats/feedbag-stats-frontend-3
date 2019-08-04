@@ -9,6 +9,7 @@
         :opens="opens"
         :single-date-picker="true"
         :ranges="false"
+        ref="picker"
       >
         <!--Optional scope for the input displaying the dates -->
         <div slot="input" slot-scope="picker">
@@ -209,12 +210,15 @@
         let endDate = this.getEndDate(this.$store.state.user.lastUpload);
         this.instant = endDate;
         this.datePickerRange.endDate = endDate;
+        this.datePickerRange.startDate = endDate;
+        this.$refs.picker.monthDate = endDate;
         this.loadMap();
       } else {
         window.onNuxtReady(async () => {
           let endDate = this.getEndDate(this.$store.state.user.lastUpload);
-          this.instant = endDate;
           this.datePickerRange.endDate = endDate;
+          this.datePickerRange.startDate = endDate;
+          this.$refs.picker.monthDate = endDate;
           this.loadMap();
         });
       }

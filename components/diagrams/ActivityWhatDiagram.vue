@@ -7,6 +7,7 @@
         @update="updateData"
         :locale-data="locale"
         :opens="opens"
+        ref="picker"
       >
         <!--Optional scope for the input displaying the dates -->
         <div slot="input" slot-scope="picker">
@@ -187,7 +188,6 @@
             }
           });
 
-        console.log(result);
 
         if (result.total && result.total > 0) {
           this.aggregated = result.aggregated;
@@ -289,8 +289,10 @@
     },
     async mounted() {
       if (this.$store.state.vuexLoaded) {
-        this.dateRange.startDate = new Date(this.$store.state.user.lastUpload);
+        let oneWeekAgo = new Date(this.$store.state.user.lastUpload);
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
         this.dateRange.endDate = new Date(this.$store.state.user.lastUpload);
+        this.dateRange.startDate = oneWeekAgo;
         this.updateData();
       } else {
         window.onNuxtReady(async () => {
@@ -298,7 +300,9 @@
           oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
           this.dateRange.endDate = new Date(this.$store.state.user.lastUpload);
           this.dateRange.startDate = oneWeekAgo;
+          this.$refs.picker.monthDate = oneWeekAgo;
           this.updateData();
+
         });
       }
     },
