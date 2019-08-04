@@ -2,8 +2,6 @@
   <div>
     <h1 class="page-title">Global Statistics</h1>
     <GlobalStatisticsTable/>
-    <hr class="mb-5 mt-5">
-    <GlobalStatisticsActivities/>
   </div>
 </template>
 
@@ -11,13 +9,11 @@
 
   import moment from 'moment';
   import GlobalStatisticsTable from '~/components/diagrams/GlobalStatisticsTable.vue';
-  import GlobalStatisticsActivities from '~/components/diagrams/GlobalStatisticsActivities.vue';
 
   export default {
     middleware: 'auth',
     components: {
       GlobalStatisticsTable,
-      GlobalStatisticsActivities
     },
   }
 </script>

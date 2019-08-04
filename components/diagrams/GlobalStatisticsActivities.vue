@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1 class="page-title">Global Events grouped by Feedbag Version</h1>
     <div class="time-picker mb-4">
       <date-range-picker
         v-model="dateRange"
@@ -19,7 +20,6 @@
       :updateArgs="updateArgs"
       :options="optionsChart"
       ref="chart"></highcharts>
-    {{statistics}}
   </div>
 </template>
 

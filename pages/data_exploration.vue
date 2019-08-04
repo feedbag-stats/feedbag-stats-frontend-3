@@ -78,15 +78,23 @@
         </b-button>
       </template>
     </b-modal>
+    <br>
+    <br>
+    <hr class="mb-5 mt-5">
+    <GlobalStatisticsActivities/>
   </div>
 </template>
 
 <script>
 
   import moment from 'moment';
+  import GlobalStatisticsActivities from '~/components/diagrams/GlobalStatisticsActivities.vue';
 
   export default {
     middleware: 'auth',
+    components: {
+      GlobalStatisticsActivities
+    },
     data() {
       return {
         events: [],
@@ -239,7 +247,22 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+
+  .modal-dialog {
+    width: 90%;
+    max-width: initial;
+
+    pre {
+      overflow-x: auto;
+      white-space: pre-wrap;
+      white-space: -moz-pre-wrap;
+      white-space: -pre-wrap;
+      white-space: -o-pre-wrap;
+      word-wrap: break-word;
+    }
+  }
+
   .event-wrapper {
     width: 100%;
     height: 500px;

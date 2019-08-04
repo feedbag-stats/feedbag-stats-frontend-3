@@ -39,8 +39,8 @@
       data[index - 1].x2 += randomDuration;
     } else {
       data[index] = {
-        x: spanStart + offset,
-        x2: spanStart + randomDuration + offset,
+        x: new Date(spanStart + offset),
+        x2: new Date(spanStart + randomDuration + offset),
         y: randomCategory,
       };
       index++;

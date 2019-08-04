@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="page-title">Test Runs</h1>
+    <h1 class="page-title">Executed Tests</h1>
     <div class="time-picker mb-4">
       <date-range-picker
         v-model="datePickerRange"
@@ -30,7 +30,7 @@
       <div v-for="rowIndex in Array(numberOfWeeks).keys()" class="map-row">
         <div v-for="cellIndex in Array(daysPerWeek).keys()" class="map-cell"
              :set="cell = map[rowIndex * 7 + cellIndex]">
-          <div v-b-tooltip.html :title="'<strong>'+cell.count+'</strong> Test Runs on '+cell.date"
+          <div v-b-tooltip.html :title="'<strong>'+cell.count+'</strong> tests executed on '+cell.date"
                :class="'background intensity-'+cell.intensity"></div>
         </div>
         <div class="map-cell text">#{{ (weekNumberStart+rowIndex-1)%52+1 }}</div>

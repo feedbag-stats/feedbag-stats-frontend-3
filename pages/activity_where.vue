@@ -73,6 +73,7 @@
         statistics: [],
         chartOptions: {
           chart: {
+            zoomType: 'x',
             type: 'xrange'
           },
           title: {
