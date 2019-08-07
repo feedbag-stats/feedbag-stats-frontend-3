@@ -29,7 +29,7 @@
   import moment from 'moment';
 
   export default {
-    name: 'GlobalStatistics',
+    name: 'GlobalStatisticsActivities',
     data() {
       return {
         statistics: {},
@@ -131,14 +131,14 @@
     },
     async mounted() {
       if (this.$store.state.vuexLoaded) {
-        let endDate = this.getEndDate(this.$store.state.user.lastUpload);
+        let endDate = new Date(this.$store.state.user.lastUpload);
         this.dateRange.endDate = endDate;
         this.dateRange.startDate = endDate;
         this.$refs.picker.monthDate = endDate;
         this.loadData();
       } else {
         window.onNuxtReady(async () => {
-          let endDate = this.getEndDate(this.$store.state.user.lastUpload);
+          let endDate = new Date(this.$store.state.user.lastUpload);
           this.dateRange.endDate = endDate;
           this.dateRange.startDate = endDate;
           this.$refs.picker.monthDate = endDate;

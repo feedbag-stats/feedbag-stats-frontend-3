@@ -224,7 +224,7 @@
   import moment from 'moment';
 
   export default {
-    name: 'GlobalStatistics',
+    name: 'GlobalStatisticsTable',
     data() {
       return {
         intervals: [7, 30, 90, 360],
