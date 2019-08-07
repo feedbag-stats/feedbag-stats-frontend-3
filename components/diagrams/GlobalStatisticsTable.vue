@@ -156,6 +156,13 @@
           </template>
         </tr>
         <tr>
+          <td>Success rate</td>
+          <template v-for="interval in intervals">
+            <td class="data-cell left">{{ prettyPrint(statistics[interval].user.successfulTests/statistics[interval].user.testsRun*100,2,'%') }} </td>
+            <td class="data-cell right">{{ prettyPrint(statistics[interval].global.successfulTests/statistics[interval].global.testsRun*100,2,'%') }} </td>
+          </template>
+        </tr>
+        <tr>
           <td>Average daily fixed tests</td>
           <template v-for="interval in intervals">
             <td class="data-cell left">{{ prettyPrint(statistics[interval].user.testsFixed,2) }}</td>
