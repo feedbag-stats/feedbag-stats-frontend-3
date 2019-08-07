@@ -9,6 +9,7 @@
         :opens="opens"
         :single-date-picker="true"
         :ranges="false"
+        ref="picker"
       >
         <!--Optional scope for the input displaying the dates -->
         <div slot="input" slot-scope="picker">
@@ -130,13 +131,17 @@
     },
     async mounted() {
       if (this.$store.state.vuexLoaded) {
-        this.dateRange.startDate = new Date(this.$store.state.user.lastUpload);
-        this.dateRange.endDate = new Date(this.$store.state.user.lastUpload);
+        let endDate = this.getEndDate(this.$store.state.user.lastUpload);
+        this.dateRange.endDate = endDate;
+        this.dateRange.startDate = endDate;
+        this.$refs.picker.monthDate = endDate;
         this.loadData();
       } else {
         window.onNuxtReady(async () => {
-          this.dateRange.startDate = new Date(this.$store.state.user.lastUpload);
-          this.dateRange.endDate = new Date(this.$store.state.user.lastUpload);
+          let endDate = this.getEndDate(this.$store.state.user.lastUpload);
+          this.dateRange.endDate = endDate;
+          this.dateRange.startDate = endDate;
+          this.$refs.picker.monthDate = endDate;
           this.loadData();
         });
       }

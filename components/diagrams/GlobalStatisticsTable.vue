@@ -22,8 +22,10 @@
       <div class="col-md-6">
         <div class="float-right">
           <div style="text-align: right">
-            <font-awesome-icon :icon="['fal', 'user']"/> = Me<br>
-            <font-awesome-icon :icon="['fal', 'globe']"/> = Global
+            <font-awesome-icon :icon="['fal', 'user']"/>
+            = Me<br>
+            <font-awesome-icon :icon="['fal', 'globe']"/>
+            = Global
           </div>
         </div>
       </div>

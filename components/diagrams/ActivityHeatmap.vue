@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4>Activity Heatmap</h4>
+    <h4>Heatmap</h4>
     <div class="time-picker mb-4">
       <date-range-picker
         v-model="datePickerRange"

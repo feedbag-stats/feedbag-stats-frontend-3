@@ -10,6 +10,7 @@
           :opens="opens"
           :single-date-picker="true"
           :ranges="false"
+          ref="picker"
         >
           <!--Optional scope for the input displaying the dates -->
           <div slot="input" slot-scope="picker">
@@ -128,10 +129,10 @@
         }
 
         let minDate = this.dateRange.startDate;
-        minDate = minDate.setHours(0, 0, 0, 0);
+        minDate = minDate.setUTCHours(0, 0, 0, 0);
 
         let maxDate = this.dateRange.startDate;
-        maxDate = maxDate.setHours(23, 59, 59, 999);
+        maxDate = maxDate.setUTCHours(23, 59, 59, 999);
 
         chart.chart.addSeries({
           name: 'Activities',
@@ -151,13 +152,17 @@
     },
     async mounted() {
       if (this.$store.state.vuexLoaded) {
-        this.dateRange.startDate = new Date(this.$store.state.user.lastUpload);
-        this.dateRange.endDate = new Date(this.$store.state.user.lastUpload);
+        let date = new Date(this.$store.state.user.lastUpload);
+        this.dateRange.startDate = date;
+        this.dateRange.endDate = date;
+        this.$refs.picker.monthDate = date;
         this.loadData();
       } else {
         window.onNuxtReady(async () => {
-          this.dateRange.startDate = new Date(this.$store.state.user.lastUpload);
-          this.dateRange.endDate = new Date(this.$store.state.user.lastUpload);
+          let date = new Date(this.$store.state.user.lastUpload);
+          this.dateRange.startDate = date;
+          this.dateRange.endDate = date;
+          this.$refs.picker.monthDate = date;
           this.loadData();
         });
       }

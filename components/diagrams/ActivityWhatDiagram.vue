@@ -1,12 +1,13 @@
 <template>
   <div>
-    <h1 class="page-title">Activity What Page</h1>
+    <h1 class="page-title">Activities</h1>
     <no-ssr>
       <date-range-picker
         v-model="dateRange"
         @update="updateData"
         :locale-data="locale"
         :opens="opens"
+        :ranges="ranges"
         ref="picker"
       >
         <!--Optional scope for the input displaying the dates -->
@@ -26,6 +27,10 @@
               ref="areaChart"></highcharts>
           </no-ssr>
         </div>
+        <div v-show="this.total === 0">
+          <br>
+          <p>There is no data in this timespan. Please choose another timespan.</p>
+        </div>
       </div>
 
       <div class="col-md-4">
@@ -38,9 +43,6 @@
                 ref="pieChart">
               </highcharts>
             </no-ssr>
-          </div>
-          <div v-show="this.total === 0">
-            <p>There is no data in this timespan. Please choose another timespan.</p>
           </div>
         </div>
       </div>
@@ -82,12 +84,11 @@
           showWeekNumbers: true //show week numbers on each row of the calendar
         },
         ranges: { //default value for ranges object (if you set this to false ranges will no be rendered)
-          'Today': [moment(), moment()],
-          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'This month': [moment().startOf('month'), moment().endOf('month')],
-          'This year': [moment().startOf('year'), moment().endOf('year')],
+          'This week': [moment().startOf('week'), moment().endOf('week')],
           'Last week': [moment().subtract(1, 'week').startOf('week'), moment().subtract(1, 'week').endOf('week')],
+          'This month': [moment().startOf('month'), moment().endOf('month')],
           'Last month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+          'This year': [moment().startOf('year'), moment().endOf('year')],
         },
         shortcuts: [
           {

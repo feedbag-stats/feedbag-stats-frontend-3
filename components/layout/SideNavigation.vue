@@ -14,13 +14,13 @@
               <li>
                 <nuxt-link to="activity_what">
                   <font-awesome-icon class="fa-fw" :icon="['fal', 'tasks']"/>
-                  Activity What
+                  Activities
                 </nuxt-link>
               </li>
               <li>
                 <nuxt-link to="activity_where">
                   <font-awesome-icon class="fa-fw" :icon="['fal', 'location']"/>
-                  Activity Where
+                  Locations
                 </nuxt-link>
               </li>
               <li>
