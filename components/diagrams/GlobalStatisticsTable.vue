@@ -275,6 +275,9 @@
     },
     methods: {
       prettyPrint(num, scale, unit = '') {
+        if (isNaN(num)) {
+          return '-';
+        }
         if (num === 0) {
           return '-';
         }
