@@ -3,10 +3,12 @@
     <no-ssr>
       <div class="inner">
         <div class="brand">
-          <h1>Feedbag<br>
-            <font-awesome-icon class="fa-fw" :icon="['fal', 'chart-bar']"/>
-            Stats
-          </h1>
+          <nuxt-link to="/">
+            <h1>FeedBag<br>
+              <font-awesome-icon class="fa-fw" :icon="['fal', 'chart-bar']"/>
+              <span>Dashboard</span>
+            </h1>
+          </nuxt-link>
         </div>
         <div v-if="this.isLoggedIn" class="loggedInMenu">
           <div class="menu">
@@ -82,15 +84,21 @@
 
   .brand {
     padding: 1.5rem;
+    a, a:hover {
+      text-decoration: none;
+    }
     h1 {
       font-size: 2.75rem;
       line-height: 1;
       font-weight: 300;
       color: white;
       svg {
-        font-size: 2.25rem;
-        margin-right: 0.5rem;
+        font-size: 1.75rem;
+        margin-right: 0.1rem;
         margin-left: 0.25rem;
+      }
+      span {
+        font-size: 1.75rem;
       }
     }
     margin: 1rem 0;

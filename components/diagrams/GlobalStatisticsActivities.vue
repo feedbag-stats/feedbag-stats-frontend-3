@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="page-title">Global Events grouped by Feedbag Version</h1>
+    <h1 class="page-title">Global Events grouped by FeedBag Version</h1>
     <div class="time-picker mb-4">
       <date-range-picker
         v-model="dateRange"
