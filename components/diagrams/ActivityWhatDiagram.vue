@@ -142,7 +142,7 @@
               }
             }
           },
-          series: [{}, {}, {}, {}, {}]
+          series: [{}, {}, {}, {}]
         },
         optionsPieChart: {
           chart: {

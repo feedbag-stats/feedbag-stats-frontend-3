@@ -109,7 +109,9 @@
       updateSeries() {
         let chart = this.$refs.chart;
 
-        for (let index in chart.chart.series) {
+        let numberOfSeries = chart.chart.series.length;
+
+        for (let i = 0; i < numberOfSeries; i++) {
           chart.chart.series[0].remove();
         }
 
