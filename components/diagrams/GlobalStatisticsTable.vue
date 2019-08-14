@@ -2,21 +2,33 @@
   <div>
     <div class="row">
       <div class="col-md-6">
-        <div class="time-picker mb-4">
-          <date-range-picker
-            v-model="dateRange"
-            @update="updateData"
-            :locale-data="locale"
-            :opens="opens"
-            :single-date-picker="true"
-            :ranges="false"
-            ref="picker"
-          >
-            <!--Optional scope for the input displaying the dates -->
-            <div slot="input" slot-scope="picker">
-              <font-awesome-icon :icon="['fal', 'calendar']"/>&nbsp;{{ dateRange.startDate.toLocaleDateString() }}
-            </div>
-          </date-range-picker>
+        <div class="flex-input">
+          <div class="prev-day day-mover">
+            <a href="#" v-on:click="previousDay">
+              <font-awesome-icon :icon="['fal', 'angle-left']"/>
+            </a>
+          </div>
+          <div class="time-picker mb-4">
+            <date-range-picker
+              v-model="dateRange"
+              @update="updateData"
+              :locale-data="locale"
+              :opens="opens"
+              :single-date-picker="true"
+              :ranges="false"
+              ref="picker"
+            >
+              <!--Optional scope for the input displaying the dates -->
+              <div slot="input" slot-scope="picker">
+                <font-awesome-icon :icon="['fal', 'calendar']"/>&nbsp;{{ dateRange.startDate.toLocaleDateString() }}
+              </div>
+            </date-range-picker>
+          </div>
+          <div class="next-day day-mover">
+            <a href="#" v-on:click="nextDay">
+              <font-awesome-icon :icon="['fal', 'angle-right']"/>
+            </a>
+          </div>
         </div>
       </div>
       <div class="col-md-6">
@@ -158,8 +170,12 @@
         <tr>
           <td>Success rate</td>
           <template v-for="interval in intervals">
-            <td class="data-cell left">{{ prettyPrint(statistics[interval].user.successfulTests/statistics[interval].user.testsRun*100,2,'%') }} </td>
-            <td class="data-cell right">{{ prettyPrint(statistics[interval].global.successfulTests/statistics[interval].global.testsRun*100,2,'%') }} </td>
+            <td class="data-cell left">{{
+              prettyPrint(statistics[interval].user.successfulTests/statistics[interval].user.testsRun*100,2,'%') }}
+            </td>
+            <td class="data-cell right">{{
+              prettyPrint(statistics[interval].global.successfulTests/statistics[interval].global.testsRun*100,2,'%') }}
+            </td>
           </template>
         </tr>
         <tr>
@@ -276,12 +292,30 @@
             }
           });
         this.statsLoaded = true;
-      }
-      ,
+      },
+      nextDay(e) {
+        e.preventDefault();
+        let today = new Date(this.dateRange.startDate);
+        today.setDate(today.getDate() + 1);
+
+        this.dateRange.startDate = today;
+        this.dateRange.endDate = today;
+
+        this.loadData();
+      },
+      previousDay(e) {
+        e.preventDefault();
+        let today = new Date(this.dateRange.startDate);
+        today.setDate(today.getDate() - 1);
+
+        this.dateRange.startDate = today;
+        this.dateRange.endDate = today;
+
+        this.loadData();
+      },
       async updateData() {
         this.loadData();
-      }
-      ,
+      },
     },
     async mounted() {
       if (this.$store.state.vuexLoaded) {

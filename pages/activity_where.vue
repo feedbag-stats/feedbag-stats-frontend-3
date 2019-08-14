@@ -2,7 +2,12 @@
   <div>
     <h1 class="page-title">Activity Location</h1>
     <div class="flex-input">
-      <div class="time-picker mb-4 mr-4">
+      <div class="prev-day day-mover">
+        <a href="#" v-on:click="previousDay">
+          <font-awesome-icon :icon="['fal', 'angle-left']"/>
+        </a>
+      </div>
+      <div class="time-picker mb-4">
         <date-range-picker
           v-model="dateRange"
           @update="loadData"
@@ -17,6 +22,11 @@
             <font-awesome-icon :icon="['fal', 'calendar']"/>&nbsp;{{ dateRange.startDate.toLocaleDateString() }}
           </div>
         </date-range-picker>
+      </div>
+      <div class="next-day day-mover">
+        <a href="#" v-on:click="nextDay">
+          <font-awesome-icon :icon="['fal', 'angle-right']"/>
+        </a>
       </div>
       <div class="location-picker">
         <div>
@@ -146,9 +156,30 @@
         });
 
         chart.chart.yAxis[0].setCategories(categories);
-        chart.chart.xAxis[0].setExtremes(minDate, maxDate);
+        //chart.chart.xAxis[0].setExtremes(minDate, maxDate);
         chart.chart.redraw();
-      }
+        //chart.chart.redraw();
+      },
+      nextDay(e) {
+        e.preventDefault();
+        let today = new Date(this.dateRange.startDate);
+        today.setDate(today.getDate() + 1);
+
+        this.dateRange.startDate = today;
+        this.dateRange.endDate = today;
+
+        this.loadData();
+      },
+      previousDay(e) {
+        e.preventDefault();
+        let today = new Date(this.dateRange.startDate);
+        today.setDate(today.getDate() - 1);
+
+        this.dateRange.startDate = today;
+        this.dateRange.endDate = today;
+
+        this.loadData();
+      },
     },
     async mounted() {
       if (this.$store.state.vuexLoaded) {
@@ -174,9 +205,25 @@
   .flex-input {
     display: flex;
   }
+
   .location-picker {
     width: 25%;
     min-width: 200px;
+  }
+
+  .day-mover {
+    padding: 0.5rem;
+    cursor: pointer;
+    i, svg {
+      font-size: 1.75rem;
+    }
+    &.next-day {
+      padding-left: 1rem;
+      margin-right: 1rem;
+    }
+    &.prev-day {
+      padding-right: 1rem;
+    }
   }
 
 </style>
