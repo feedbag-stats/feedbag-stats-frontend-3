@@ -1,6 +1,15 @@
 <template>
   <div>
-    <h1 class="page-title">Activities</h1>
+    <div class="clearfix">
+      <div class="float-left">
+        <h1 class="page-title">Activities</h1>
+      </div>
+      <div class="float-right">
+        <a href="#" v-b-modal.modal-1>
+          <font-awesome-icon class="fa-2x help-icon" :icon="['fal', 'question-circle']"/>
+        </a>
+      </div>
+    </div>
     <no-ssr>
       <date-range-picker
         v-model="dateRange"
@@ -47,6 +56,21 @@
         </div>
       </div>
     </div>
+    <b-modal size="lg" id="modal-1" title="Help">
+      <p>This section shows various stats about the activities performed while FeedBag was running. The upper part shows how much time was spent in a given timespan as well as how the time was distributed with the different categories:</p>
+      <ul>
+        <li><strong>Testingstate</strong>: Time spent testing (running tests, adjust tests etc.)</li>
+        <li><strong>Write</strong>: Time spent writing code (editing files etc.)</li>
+        <li><strong>Debug</strong>: Time spent while the debugger is running (variable evaluation, setting breakpoints, jumping, etc.)</li>
+        <li><strong>Active</strong>: Other time spent (opening files, switching solutions, settings, etc.)</li>
+      </ul>
+      <p>The lower part shows a GitHub-alike heatmap with the number of activites per day.</p>
+      <template slot="modal-footer" slot-scope="{ ok, cancel, hide }">
+        <b-button size="md" variant="primary" @click="ok()">
+          Close
+        </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 

@@ -20,11 +20,12 @@ import {
   faAngleLeft,
   faAngleRight,
   faFileUpload,
+  faQuestionCircle,
 } from "@fortawesome/pro-light-svg-icons";
 import {faSpinner, faInfo} from "@fortawesome/free-solid-svg-icons";
 
 config.autoAddCss = false;
 
-library.add(faChartBar, faTasks, faUser, faCog, faUsers, faCalendar, faLock, faSpinner, faGlobe, faCheck, faLocation, faDatabase, faTrash, faFile, faRecycle, faAngleLeft, faAngleRight, faInfo, faFileUpload);
+library.add(faQuestionCircle, faChartBar, faTasks, faUser, faCog, faUsers, faCalendar, faLock, faSpinner, faGlobe, faCheck, faLocation, faDatabase, faTrash, faFile, faRecycle, faAngleLeft, faAngleRight, faInfo, faFileUpload);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);

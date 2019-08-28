@@ -1,6 +1,15 @@
 <template>
   <div>
-    <h1 class="page-title">Activity Location</h1>
+    <div class="clearfix">
+      <div class="float-left">
+        <h1 class="page-title">Activity Location</h1>
+      </div>
+      <div class="float-right">
+        <a href="#" v-b-modal.modal-1>
+          <font-awesome-icon class="fa-2x help-icon" :icon="['fal', 'question-circle']"/>
+        </a>
+      </div>
+    </div>
     <div class="flex-input">
       <div class="prev-day day-mover">
         <a href="#" v-on:click="previousDay">
@@ -45,6 +54,14 @@
         </highcharts>
       </div>
     </div>
+    <b-modal size="lg" id="modal-1" title="Help">
+      <p>This section shows where you have performed activites. You can choose a given day as well as the level of depth (Solution, Project, Package, File).</p>
+      <template slot="modal-footer" slot-scope="{ ok, cancel, hide }">
+        <b-button size="md" variant="primary" @click="ok()">
+          Close
+        </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 

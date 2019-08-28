@@ -1,6 +1,15 @@
 <template>
   <div>
-    <h1 class="page-title">TDD Cycles</h1>
+    <div class="clearfix">
+      <div class="float-left">
+        <h1 class="page-title">TDD Cycles</h1>
+      </div>
+      <div class="float-right">
+        <a href="#" v-b-modal.modal-1>
+          <font-awesome-icon class="fa-2x help-icon" :icon="['fal', 'question-circle']"/>
+        </a>
+      </div>
+    </div>
     <div class="time-picker mb-4">
       <date-range-picker
         v-model="datePickerRange"
@@ -44,6 +53,17 @@
         </div>
       </div>
     </div>
+    <b-modal size="lg" id="modal-1" title="Help">
+      <p>This section shows two heatmaps about testing.</p>
+      <p><strong>TDD Cycle:</strong> A TDD cycle is a developement cycle, where first the test is added, then the code
+        is written until successful test, and finally the code is refactored.</p>
+      <p><strong>Executed Tests: </strong> This displays the total number of test executed. When running multiple test in a single test run each executed test is counted as an execution.</p>
+      <template slot="modal-footer" slot-scope="{ ok, cancel, hide }">
+        <b-button size="md" variant="primary" @click="ok()">
+          Close
+        </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 

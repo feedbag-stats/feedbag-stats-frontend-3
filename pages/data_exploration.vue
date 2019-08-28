@@ -1,6 +1,15 @@
 <template>
   <div>
-    <h1 class="page-title">Data Exploration</h1>
+    <div class="clearfix">
+      <div class="float-left">
+        <h1 class="page-title">Data Exploration</h1>
+      </div>
+      <div class="float-right">
+        <a href="#" v-b-modal.modal-1>
+          <font-awesome-icon class="fa-2x help-icon" :icon="['fal', 'question-circle']"/>
+        </a>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-8">
         <div class="time-picker mb-4">
@@ -60,7 +69,7 @@
         down for later events
       </div>
     </div>
-    <b-modal :hide-cancel="true" size="lg" id="eventModal" title="Event Information" ref="modal">
+    <b-modal class="modal-big" :hide-cancel="true" size="lg" id="eventModal" title="Event Information" ref="modal">
       <div v-if="modal.loading || modal.event === null">
         <font-awesome-icon class="fa-spin fa-fw big-spinner" :icon="['fas', 'spinner']"/>
       </div>
@@ -82,6 +91,14 @@
     <br>
     <hr class="mb-5 mt-5">
     <GlobalStatisticsActivities/>
+    <b-modal size="lg" id="modal-1" title="Help">
+      <p>In this section, you can explore the data you have uploaded to the dashboard. Scroll up or down to explore previous or next Events. Alternatively, you can use the datepicker to jump to a certain time.</p>
+      <template slot="modal-footer" slot-scope="{ ok, cancel, hide }">
+        <b-button size="md" variant="primary" @click="ok()">
+          Close
+        </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -249,7 +266,7 @@
 
 <style lang="scss">
 
-  .modal-dialog {
+  .modal-big .modal-dialog {
     width: 90%;
     max-width: initial;
 
