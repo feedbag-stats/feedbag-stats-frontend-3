@@ -14,6 +14,7 @@
       <div class="col-md-8">
         <div class="time-picker mb-4">
           <date-range-picker
+            ref="picker"
             v-model="dateRange"
             @update="updateData"
             :locale-data="locale"
@@ -251,9 +252,14 @@
     async mounted() {
       document.getElementById("event-wrapper").addEventListener('scroll', this.handleScroll);
       if (this.$store.state.vuexLoaded) {
+        this.dateRange.endDate = new Date(this.$store.state.user.lastUpload);
+        this.dateRange.startDate = new Date(this.$store.state.user.lastUpload);
         this.loadMore("prev");
       } else {
         window.onNuxtReady(async () => {
+          this.dateRange.endDate = new Date(this.$store.state.user.lastUpload);
+          this.dateRange.startDate = new Date(this.$store.state.user.lastUpload);
+          this.$refs.picker.monthDate = new Date(this.$store.state.user.lastUpload);
           this.loadMore("prev");
         });
       }
